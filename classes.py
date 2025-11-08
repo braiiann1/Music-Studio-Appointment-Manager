@@ -32,26 +32,24 @@ SALAS = [
 ]
 
 class Equipos_Audio:
-    def __init__(self, id, name, category, quantity, requires_technician, setup_time):
+    def __init__(self, id, name, category, quantity, requires_technician):
         self.id = id
         self.name = name
         self.category = category # "microfono", "instrumento", "monitor", "software de audio", "soundcard", "amplificador"
         self.quantity = quantity
         self.requires_technician = requires_technician
-        self.setup_time = setup_time # tiempo necesario para la instalacion de cada equipos
-
 EQUIPOS = [
-    Equipos_Audio (101, "Microfono Profesional", "microfono", 5, False, datetime.timedelta(minutes = 10)),
-    Equipos_Audio (102, "Guitarra Fender Stratocaster", "instrumento", 1, True, datetime.timedelta(minutes=20)),
-    Equipos_Audio (103, "Bateria Acustica Yamaha", "instrumento", 1, True, datetime.timedelta(minutes=40)),
-    Equipos_Audio (104, "Bajo Fender American Vintage", "instrumento", 1, True, datetime.timedelta(minutes=10)),
-    Equipos_Audio (105, "Sintetizador 808", "instrumento", 1, False, datetime.timedelta(minutes=5)),
-    Equipos_Audio (106, "Monitores de Audio Profesional", "monitor", "3", False, datetime.timedelta(minutes=15)),
-    Equipos_Audio (107, "Tarjeta de Sonido", "soundcard", "1", True, datetime.timedelta(minutes=5)),
-    Equipos_Audio (108, "Antares Autotune", "software de audio", 1, True, datetime.timedelta(minutes=1)),
-    Equipos_Audio (109, "Microfono para bateria Yamaha", "microfono", 1, False, datetime.timedelta(minutes=5)),
-    Equipos_Audio (110, "Amplificador Fender", "amplificador", 2, True, datetime.timedelta(minutes=10)),
-    Equipos_Audio (111, "Guitarra Fender Rollercaster", "instrumento", 1, True, datetime.timedelta(minutes=20))
+    Equipos_Audio (101, "Microfono Profesional", "microfono", 5, False),
+    Equipos_Audio (102, "Guitarra Fender Stratocaster", "instrumento", 1, True),
+    Equipos_Audio (103, "Bateria Acustica Yamaha", "instrumento", 1, True,),
+    Equipos_Audio (104, "Bajo Fender American Vintage", "instrumento", 1, True),
+    Equipos_Audio (105, "Sintetizador 808", "instrumento", 1, False),
+    Equipos_Audio (106, "Monitores de Audio Profesional", "monitor", "3", False),
+    Equipos_Audio (107, "Tarjeta de Sonido", "soundcard", "1", True),
+    Equipos_Audio (108, "Antares Autotune", "software de audio", 1, True),
+    Equipos_Audio (109, "Microfono para bateria Yamaha", "microfono", 1, False),
+    Equipos_Audio (110, "Amplificador Fender", "amplificador", 2, True),
+    Equipos_Audio (111, "Guitarra Fender Rollercaster", "instrumento", 1, True)
 ]
 
 class Tecnicos:
