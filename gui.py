@@ -53,14 +53,38 @@ def eliminar():
     pass
 
 def informacion():
+    sala_informacion = ""
+    eventos_informacion = ""
     if salas_opciones._current_value == "Sala A - Singular":
         sala_informacion = "Sala para proyectos de un solo artista con alguna colaboracion"
-    elif salas_opciones._current_value == "Sala B - Multipersonal":
+    elif salas_opciones._current_value == "Sala B - MultiPersonal":
         sala_informacion = "Sala para proyectos profesionales o de bandas emergentes"
     elif salas_opciones._current_value == "Sala C - Profesional":
         sala_informacion = "Sala de capacidad considerable para proyectos a gran escala. Ej; Orquestas, Bandas sonoras, Coros"
+
+    if eventos_opciones._current_value == "Grabacion de single":
+        eventos_informacion = "Grabacion de un tema sencillo"
+    elif eventos_opciones._current_value == "Grabacion de mixtape":
+        eventos_informacion = "Grabacion de varias canciones de forma que conformen un mismo proyecto"
+    elif eventos_opciones._current_value == "Grabacion de EP":
+        eventos_informacion = "Grabacion de un proyecto sencillo de corta duracion"
+    elif eventos_opciones._current_value == "Grabacion de Album":
+        eventos_informacion = "Grabacion de un proyecto de duracion considerable, el cual puede ser conceptual o no"
+    elif eventos_opciones._current_value == "Grabacion de Banda Sonora/OST":
+        eventos_informacion = "Grabacion de un proyecto con un costo de produccion considerable, se requiere de una alta inversion por ambas partes para lograr esta sesion"
+
+    frame_informacion.place(x=260, y=240)
+    button_cerrar_information.place(relx = 0.93, rely = 0.04)
+    Event_Information_Label = ctk.CTkLabel(frame_informacion, width=700, height=30, text=eventos_informacion, font=("liberation sans", 25))
+    Room_Information_Label = ctk.CTkLabel(frame_informacion, width=700, height=30, text=sala_informacion, font=("liberation sans", 25))
+    Title_Event_Label = ctk.CTkLabel(frame_informacion, width=300, height=10, text=eventos_opciones._current_value, font=("liberation sans", 30, "bold"))
+    Title_Room_Label = ctk.CTkLabel(frame_informacion, width=300, height=10, text=salas_opciones._current_value, font=("liberation sans", 30, "bold"))
+    Event_Information_Label.place(relx=0.1, rely=0.22)
+    Room_Information_Label.place(relx=0.1, rely =0.6)
+    Title_Event_Label.place(relx = 0.05, rely = 0.1)
+    Title_Room_Label.place(relx= 0.02, rely= 0.4)
     
-    
+
     
 def anadir_cerrar():
     frame_anadir.place_forget()
@@ -69,6 +93,13 @@ def anadir_cerrar():
 def event_information():
     pass
 
+def informacion_cerrar():
+    frame_informacion.place_forget()
+
+def radio_press(radio):
+    if radio.value == 0:
+        radio.value = 1
+    else: radio.value = 0
 
 nombre_eventos=[]
 for i in range(len(EVENTOS)):
@@ -104,6 +135,8 @@ frame2 = ctk.CTkFrame(window, fg_color="#221515", width=1200, height=600, corner
 frame_anadir = ctk.CTkFrame(window, fg_color="#3A2626", bg_color="#221515", width=800, height=400, corner_radius=50)
 frame_event_list = ctk.CTkFrame(frame2, fg_color="#442B2B", bg_color="transparent", width=1150, height=500, corner_radius=40) 
 
+frame_informacion = ctk.CTkFrame(window, fg_color="#3A2626", bg_color="#442B2B", width= 800, height=400, corner_radius=40, )
+
 #Labels
 titulo = ctk.CTkLabel(frame1, width=500, height=70, text='Estudio Musical "Botaos Gang"', font=("liberation sans", 25, "bold"))
 subtitulo = ctk.CTkLabel(frame1, text="Gestor de sesiones de grabacion", font=("liberation sans", 20, "bold"))
@@ -124,11 +157,12 @@ end_hour = ctk.CTkTextbox(frame_anadir, width=90, height=30)
 
 #Botones
 add_button = ctk.CTkButton(frame2, text="+", fg_color="transparent", hover_color="#523939", width=15, height=15, command=anadir, font=("liberation sans", 30, "bold"))
-edit_button = ctk.CTkButton(frame2, text="Editar", fg_color="#442B2B",hover_color="#523939", width=10, height=15, command=editar, font=("liberation sans", 20, "bold"))
+edit_button = ctk.CTkButton(frame2, text="Editar", fg_color="#442B2B", hover_color="#523939", width=10, height=15, command=editar, font=("liberation sans", 20, "bold"))
 
-confirm_button = ctk.CTkButton(frame_anadir, text="Confirmar", fg_color="#251919",hover_color="#7A6767", width=10, height=15,command=confirm, font=("liberation sans", 20, "bold"))
+confirm_button = ctk.CTkButton(frame_anadir, text="Confirmar", fg_color="#251919", hover_color="#7A6767", width=10, height=15, command=confirm, font=("liberation sans", 20, "bold"))
 
-event_information_button = ctk.CTkButton(frame_anadir, text="i", fg_color="#251919", hover_color="#7A6767", width=15, height=10,corner_radius=100, command=event_information, font=("liberation sans", 20, "bold"))
+event_information_button = ctk.CTkButton(frame_anadir, text="i", fg_color="#251919", hover_color="#7A6767", width=15, height=10, 
+                                         corner_radius=100, command=informacion, font=("liberation sans", 20, "bold"))
 
 ##Radios
 radio1 = ctk.CTkRadioButton(frame_anadir, text=EQUIPOS[0].name, hover_color="#533737", font=radio_font)
@@ -145,9 +179,13 @@ radio11= ctk.CTkRadioButton(frame_anadir, text=EQUIPOS[10].name, hover_color="#5
 
 radios = [radio1,radio2,radio3,radio4,radio5,radio6,radio7,radio8,radio9,radio10,radio11]
 
+#lista_eventos = ctk.CTkScrollableFrame()
 
-##Cerrar
+
+##Cerrar/
 button_cerrar_anadir = ctk.CTkButton(frame_anadir, text="X", corner_radius=100, hover_color="#251818", command=anadir_cerrar, width=30, height=30, fg_color="#160E0E")
+button_cerrar_information = ctk.CTkButton(frame_informacion, text="X", corner_radius=100, hover_color="#251818", command=informacion_cerrar, width=30, height=30, fg_color="#160E0E")
+
 
 #Empaqueteos
 frame1.pack()
