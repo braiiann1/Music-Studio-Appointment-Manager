@@ -1,35 +1,36 @@
 import datetime
 
 class Eventos:
-    def __init__(self, id, name, min_booking_hours, price, complexity_index):
+    def __init__(self, id, name, min_booking_hours, price, complexity_index, description):
         self.id = id
         self.name = name
         self.min_booking_hours = min_booking_hours
         self.price = price
         self.complexity_index = complexity_index
+        self.description = description
 
 EVENTOS = [
-    Eventos (901, "Grabacion de single", 1, 500, 4),
-    Eventos (902, "Grabacion de mixtape", 4, 3000, 5),
-    Eventos (903, "Grabacion de EP", 4, 2000, 4),
-    Eventos (904, "Grabacion de Album", 8, 5000, 7),
-    Eventos (905, "Grabacion de Banda Sonora/OST", 36, 20000, 9)
+    Eventos (901, "Grabacion de single", 1, 500, 4, "Grabacion de una unica cancion o pieza"),
+    Eventos (902, "Grabacion de mixtape", 4, 3000, 5, "Grabacion de varias canciones de forma que conformen un mismo proyecto, funciona como una combinacion de varios singles"),
+    Eventos (903, "Grabacion de EP", 4, 2000, 4, "Grabacion de un proyecto sencillo de corta duracion, pero con un trabajo productivo similar al de un album"),
+    Eventos (904, "Grabacion de Album", 8, 5000, 7, "Grabacion de un proyecto de duracion considerable, maxima forma de la expresion artistica en cuanto a produccion musical"),
+    Eventos (905, "Grabacion de Banda Sonora/OST", 36, 20000, 9, "Grabacion de un proyecto con un costo de produccion considerable, se requiere de una alta inversion por ambas partes para lograr esta sesion")
 ]
 
 class Salas:
-    def __init__(self, id, name, capacity, hourly_rate, min_booking_hours, max_complexity):
+    def __init__(self, id, name, capacity, hourly_rate, min_booking_hours, max_complexity, description):
         self.id = id
         self.name = name
         self.capacity = capacity
         self.hourly_rate = hourly_rate
         self.min_booking_hours = min_booking_hours # minimo requerido para la reserva
         self.max_complexity = max_complexity
+        self.description = description
 
 SALAS = [
-    Salas (1, "Sala A - Singular", 2, 500, 2, 6), # Sala para proyectos de un solo artista con alguna colaboracion
-    Salas (2, "Sala B - MultiPersonal", 10, 1000, 5, 8), # Sala para proyectos profesionales o de bandas emergentes
-    Salas (3, "Sala C - Profesional", 50, 4000, 10, 10) # Sala de capacidad considerable para proyectos a gran escala. Ej; Orquestas, Bandas sonoras, Coros
-]
+    Salas (1, "Sala A - Singular", 2, 500, 2, 6, "Sala para proyectos de un solo artista con alguna colaboracion"),
+    Salas (2, "Sala B - MultiPersonal", 10, 1000, 5, 8, "Sala para proyectos profesionales o de bandas emergentes, admite varios instrumentos, equipos y es la mas completa para el artista casual"),
+    Salas (3, "Sala C - Profesional", 50, 4000, 10, 10, "Sala de capacidad considerable para proyectos a gran escala. Ej; Orquestas, Bandas sonoras, Coros") ]
 
 class Equipos_Audio:
     def __init__(self, id, name, category, quantity, requires_technician):
@@ -47,7 +48,7 @@ EQUIPOS = [
     Equipos_Audio (106, "Monitores de Audio Profesional", "monitor", "3", False),
     Equipos_Audio (107, "Tarjeta de Sonido", "soundcard", "1", True),
     Equipos_Audio (108, "Antares Autotune", "software de audio", 1, True),
-    Equipos_Audio (109, "Microfono para bateria Yamaha", "microfono", 1, False),
+    Equipos_Audio (109, "Microfono para bateria", "microfono", 1, False),
     Equipos_Audio (110, "Amplificador Fender", "amplificador", 2, True),
     Equipos_Audio (111, "Guitarra Fender Rollercaster", "instrumento", 1, True)
 ]
