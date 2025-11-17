@@ -2,7 +2,6 @@ import tkinter as tk
 import customtkinter as ctk
 from classes import *
 from gestion import *
-import threading
 
 def start():
     frame1.pack()
@@ -11,9 +10,10 @@ def start():
     frame2.pack(pady = 10)
     eventos_titulo.place(relx = 0.03, rely = 0.05)
     add_button.place(relx = 0.95, rely = 0.03)
-    filter_button.place(relx = 0.85, rely = 0.04)
+    filter_button.place(relx = 0.85, rely = 0.044)
     edit_button.place(relx = 0.88, rely = 0.04)
     frame_event_list.place(relx = 0.02, rely =0.13)
+    render_grid()
 
 def anadir():
     frame_event_list.place_forget()
@@ -44,28 +44,33 @@ def anadir():
     event_information_button.place(relx=0.48,rely=0.05)
 
 def confirm():
-    evento = eventos_opciones._current_value
-    sala = salas_opciones._current_value
-    horario = (start_hour, end_hour)
+    evento = eventos_opciones.get()
+    sala = salas_opciones.get()
+    horario = (start_hour.get(), end_hour.get())
     inventario.clear()
     for i in radios:
-        if i._check_state:
-            inventario.append(i._text)
-    full_event = [evento,sala,inventario.copy()]
+        if i.get():
+            inventario.append(i.cget("text"))
+    full_event = [evento,sala,horario,inventario.copy()]
     lista_eventos.append(full_event)
 
 def editar():
         edit_button.configure(text="Cancelar", width=40, command = cancelar)
         add_button.place_forget()
-        for i in range(len(lista_eventos)):
-             label_event_delete = ctk.CTkButton(frame_event_list, text="-", fg_color="#251919", hover_color= "#7A6767", width=15, height=15,
+
+        editar_rearrange()
+        
+
+def editar_rearrange():
+    for i in range(len(lista_eventos)):
+        label_event_delete = ctk.CTkButton(frame_event_list, text="-", fg_color="#251919", hover_color= "#7A6767", width=15, height=15,
                                                 corner_radius=100, font=("roboto", 30, "bold"), command=lambda idx=i : eliminar(idx))
-             label_event_delete.grid(row = i, column = 3, padx = 20, pady = 10)
+        label_event_delete.grid(row = i, column = 5, padx = 20, pady = 10)
 
 def cancelar():
     edit_button.configure(text="Editar", command = editar), add_button.place(relx = 0.95, rely = 0.03)
     for i in frame_event_list.grid_slaves():
-         if i._text == "-":
+         if i.cget("text") == "-":
             i.grid_forget()
 
 def filter():
@@ -97,42 +102,43 @@ def informacion():
     Event_Information_Label.place(relx=0.1, rely=0.22)
     Room_Information_Label.place(relx=0.1, rely =0.6)
     Title_Event_Label.place(relx = 0.05, rely = 0.1)
-    Title_Room_Label.place(relx= 0.02, rely= 0.45)
+    Title_Room_Label.place(relx= 0.05, rely= 0.5)
 
-def anadir_cerrar():
+def anadir_cerrar():  
     frame_anadir.place_forget()
     frame_event_list.place(relx=0.02, rely=0.13)
     frame_event_list._create_grid
     render_grid()
 
 def render_grid():
+    
     lista_eventos.reverse()
     for i in frame_event_list.winfo_children():
         i.destroy()
 
     for i in range(len(lista_eventos)):
-            label_event_list = ctk.CTkLabel(frame_event_list, text=lista_eventos[i][0], font=("roboto", 30, "bold"), compound= "left")
-            label_event_list.grid(row=i, column=0, padx=20, pady=15)
-    for i in range(len(lista_eventos)):
-            label_event_list = ctk.CTkLabel(frame_event_list, text=lista_eventos[i][1], font=("roboto", 30, "bold"), compound="left")
-            label_event_list.grid(row=i, column=1, padx=20, pady=15)
-    for i in range(len(lista_eventos)):
-            label_event_button = ctk.CTkButton(frame_event_list, text="Info.", fg_color="#503636", hover_color="#7A6767", width=15, height=15, 
+            label_event_event = ctk.CTkLabel(frame_event_list, text=lista_eventos[i][0], font=("roboto", 30, "bold"), compound= "left")
+            label_event_event.grid(row=i, column=0, padx=20, pady=15)
+
+            label_event_room = ctk.CTkLabel(frame_event_list, text=lista_eventos[i][1], font=("roboto", 30, "bold"), compound="left")
+            label_event_room.grid(row=i, column=1, padx=20, pady=15)
+
+            label_event_hour = ctk.CTkLabel(frame_event_list,text=lista_eventos[i][2][0]+"-"+lista_eventos[i][2][1], font=("roboto", 30, "bold"), compound="left")
+            label_event_hour.grid(row = i, column=2)
+
+            label_event_info = ctk.CTkButton(frame_event_list, text="Info.", fg_color="#503636", hover_color="#7A6767", width=15, height=15, 
                                          corner_radius=100, font=("roboto", 30, "bold"), command= lambda idx=i : check_inventory(idx))
-            label_event_button.grid(row = i, column=2, padx=20, pady=15)
+            label_event_info.grid(row = i, column=3, padx=20, pady=15)
             
 def check_inventory(indice):
-    current_inventory = lista_eventos[indice][2]
+    current_inventory = lista_eventos[indice][3]
     print(current_inventory) 
          
 def eliminar(indice):
-    lista_eventos.pop(indice)
+    del lista_eventos[indice]
     render_grid()
-    if edit_button._text == "Cancelar":
-         for i in range(len(lista_eventos)):
-             label_event_delete = ctk.CTkButton(frame_event_list, text="-", fg_color="#251919", hover_color= "#7A6767", width=15, height=15,
-                                                corner_radius=100, font=("roboto", 30, "bold"), command=lambda idx=i : eliminar(idx))
-             label_event_delete.grid(row = i, column = 3, padx = 20, pady = 15)
+    editar_rearrange()
+    
 
 def informacion_cerrar():
     frame_informacion.place_forget()
@@ -192,23 +198,18 @@ salas_opciones = ctk.CTkOptionMenu(frame_anadir,fg_color="#2B1D1D", values=nombr
 eventos_titulo = ctk.CTkLabel(frame2, text="Turnos:", font=("roboto", 20, "bold"), fg_color="#442B2B", corner_radius= 10)
 desde_hasta = ctk.CTkLabel(frame_anadir, text="Horario:", font=("roboto", 27))
 
-start_hour_value = ""
-end_hour_value = ""
-start_hour = ctk.CTkEntry(frame_anadir, width=90, height=30, placeholder_text="00:00", textvariable=start_hour_value)
-end_hour = ctk.CTkEntry(frame_anadir, width=90, height=30, placeholder_text="00:00", textvariable=end_hour_value)
-
+start_hour = ctk.CTkEntry(frame_anadir, width=90, height=30, placeholder_text="00:00")
+end_hour = ctk.CTkEntry(frame_anadir, width=90, height=30, placeholder_text="00:00")
 
 #Botones
 add_button = ctk.CTkButton(frame2, text="+", fg_color="transparent", hover_color="#523939", width=15, height=15, command=anadir, font=("roboto", 30, "bold"))
 edit_button = ctk.CTkButton(frame2, text="Editar", fg_color="#442B2B", hover_color="#523939", width=10, height=15, command=editar, font=("roboto", 20, "bold"))
 filter_button = ctk.CTkButton(frame2, text="=", fg_color="#442B2B", hover_color="#523939", width=10, height=15, command=filter, font=("roboto", 20, "bold"))
 filter_button_option = ctk.CTkOptionMenu(frame2, fg_color="#442B2B",width=100, height=10, values=filtros,font=("roboto",20, "bold"), dropdown_fg_color="#442B2B", button_color="#442B2B")
-filter_button_close = ctk.CTkButton(filter_button_option, text="x", fg_color="#251919", hover_color= "#7A6767", width=15, height=15,
-                                                corner_radius=100, font=("roboto", 20, "bold"), command=filter_close)
+filter_button_close = ctk.CTkButton(filter_button_option, text="x", fg_color="#251919", hover_color= "#7A6767", width=15, height=15, font=("roboto", 20, "bold"), command=filter_close)
 confirm_button = ctk.CTkButton(frame_anadir, text="Confirmar", fg_color="#251919", hover_color="#7A6767", width=10, height=15, command=confirm, font=("roboto", 20, "bold"))
 event_information_button = ctk.CTkButton(frame_anadir, text="i", fg_color="#251919", hover_color="#7A6767", width=15, height=10, 
                                          corner_radius=100, command=informacion, font=("roboto", 20, "bold"))
-
 
 ##Radios
 radio1 = ctk.CTkCheckBox(frame_anadir, text=EQUIPOS[0].name, hover_color="#6D5757", font=radio_font, corner_radius= 90)
