@@ -1,5 +1,3 @@
-import datetime
-
 class Eventos:
     def __init__(self, id, name, min_booking_hours, price, complexity_index, description):
         self.id = id
@@ -13,7 +11,7 @@ EVENTOS = [
     Eventos (901, "Grabacion de single", 1, 500, 4, "Grabacion de una unica cancion o pieza"),
     Eventos (902, "Grabacion de mixtape", 4, 3000, 5, "Grabacion de varias canciones de forma que conformen un mismo proyecto, funciona como una combinacion de varios singles"),
     Eventos (903, "Grabacion de EP", 4, 2000, 4, "Grabacion de un proyecto sencillo de corta duracion, pero con un trabajo productivo similar al de un album"),
-    Eventos (904, "Grabacion de Album", 8, 5000, 7, "Grabacion de un proyecto de duracion considerable, maxima forma de la expresion artistica en cuanto a produccion musical"),
+    Eventos (904, "Grabacion de Album", 8, 5000, 7, "Grabacion de un proyecto de duracion considerable, maxima forma de expresion artistica en el ambito musical"),
     Eventos (905, "Grabacion de Banda Sonora/OST", 36, 20000, 9, "Grabacion de un proyecto con un costo de produccion considerable, se requiere de una alta inversion por ambas partes para lograr esta sesion")
 ]
 
@@ -39,6 +37,7 @@ class Equipos_Audio:
         self.category = category # "microfono", "instrumento", "monitor", "software de audio", "soundcard", "amplificador"
         self.quantity = quantity
         self.requires_technician = requires_technician
+
 EQUIPOS = [
     Equipos_Audio (101, "Microfono Profesional", "microfono", 5, False),
     Equipos_Audio (102, "Guitarra Fender Stratocaster", "instrumento", 1, True),
