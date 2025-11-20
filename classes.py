@@ -37,7 +37,6 @@ class Equipos_Audio:
         self.category = category # "microfono", "instrumento", "monitor", "software de audio", "soundcard", "amplificador"
         self.quantity = quantity
         self.requires_technician = requires_technician
-
 EQUIPOS = [
     Equipos_Audio (101, "Microfono Profesional", "microfono", 5, False),
     Equipos_Audio (102, "Guitarra Fender Stratocaster", "instrumento", 1, True),
@@ -49,7 +48,7 @@ EQUIPOS = [
     Equipos_Audio (108, "Antares Autotune", "software de audio", 1, True),
     Equipos_Audio (109, "Microfono para bateria", "microfono", 1, False),
     Equipos_Audio (110, "Amplificador Fender", "amplificador", 2, True),
-    Equipos_Audio (111, "Guitarra Fender Rollercaster", "instrumento", 1, True)
+    Equipos_Audio (111, "Guitarra Fender Telecaster", "instrumento", 1, True)
 ]
 
 class Tecnicos:

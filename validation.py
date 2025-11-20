@@ -42,6 +42,8 @@ def validation(event,room, hour, inventory):
         if EQUIPOS[8].name in inventory:
             return (False,f"{EQUIPOS[8].name} no es compatible con el tipo de sala seleccionado")
         
+        
+        
     #Validacion por recursos
 
     return (True, "Evento anadido con exito")
