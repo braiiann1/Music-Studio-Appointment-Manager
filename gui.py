@@ -29,6 +29,7 @@ def anadir():
     no_event_robot.forget()
     no_event_label.forget()
     frame_event_list.place_forget()
+    label_event_info.place_forget()
     frame_anadir.place(x=250,y=240)
     button_cerrar_anadir.place(relx = 0.93, rely = 0.04)
     eventos_opciones.place(relx = 0.08, rely = 0.1)
@@ -51,7 +52,7 @@ def anadir():
             rx = 0.5
             ry = 0.4
 
-    event_information_button.place(relx=0.48,rely=0.05)
+    event_information_button.place(relx=0.47,rely=0.05)
 
 def confirm():
     evento = eventos_opciones.get()
@@ -128,7 +129,6 @@ def anadir_cerrar():
     render_grid()
 
 def render_grid():
-    
     lista_eventos.reverse()
     for i in frame_event_list.winfo_children():
         i.destroy()
@@ -157,6 +157,7 @@ def eliminar(indice):
     editar_rearrange()
     
 def informacion_cerrar():
+    
     frame_informacion.place_forget()
 
 def radio_press(radio):
@@ -180,6 +181,8 @@ def validar_start(texto:str):
             return False
     return True
 
+def hover_information():
+    return
 nombre_eventos=[]
 for i in range(len(EVENTOS)):
     nombre_eventos.append(EVENTOS[i].name)
@@ -205,10 +208,12 @@ add_image = Image.open(base_path / "add_event.png")
 delete_image = Image.open(base_path / "delete.png")
 filter_image = Image.open(base_path / "filter_list.png")
 robot_image = Image.open(base_path / "no_events.png")
+info_image = Image.open(base_path / "info.png")
 add_img = ctk.CTkImage(light_image=add_image, dark_image=add_image, size=(25,25))
 del_img = ctk.CTkImage(light_image=delete_image, dark_image=delete_image, size=(30,30))
 filter_img = ctk.CTkImage(light_image=filter_image, dark_image=filter_image, size=(30,30))
 robot_img = ctk.CTkImage(light_image=robot_image, dark_image=robot_image, size=(200,200))
+info_img = ctk.CTkImage(light_image=info_image, dark_image=info_image, size=(20,20))
 
 filtros = ["Sala A", "Sala B", "Sala C", "Album", "Mixt.", "EP", "OST"]
 
@@ -245,11 +250,13 @@ salas_opciones = ctk.CTkOptionMenu(frame_anadir,fg_color="#2B1D1D", values=nombr
 eventos_titulo = ctk.CTkLabel(frame2, text="Turnos:", font=("roboto", 20, "bold"), fg_color="#442B2B", corner_radius= 10)
 desde_hasta = ctk.CTkLabel(frame_anadir, text="Horario:", font=("roboto", 27))
 
-start_hour = ctk.CTkEntry(frame_anadir, width=90, height=30, placeholder_text="00:00", validate = "key", validatecommand= vcmd)
-end_hour = ctk.CTkEntry(frame_anadir, width=90, height=30, placeholder_text="00:00", validate= "key", validatecommand= vcmd)
+start_hour = ctk.CTkEntry(frame_anadir, width=90, height=30, placeholder_text="00:00", validate = "key", validatecommand= vcmd, fg_color="#2B1D1D", font=("roboto", 15))
+end_hour = ctk.CTkEntry(frame_anadir, width=90, height=30, placeholder_text="00:00", validate= "key", validatecommand= vcmd, fg_color="#2B1D1D", font=("roboto", 15))
 
 frame_succes = ctk.CTkFrame(frame2, width=400, height=20, fg_color="transparent")
 label_succes = ctk.CTkLabel(frame_succes, text="Evento anadido con exito :D", font=("roboto", 20, "bold"), corner_radius=50, bg_color="transparent", fg_color="#472828")
+
+label_event_info = ctk.CTkLabel(frame2, text="Grabacion", font=("roboto", 20, "bold"), compound= "left")
 
 no_event_robot = ctk.CTkLabel(frame_event_list, width=200,height=200, corner_radius=20, image=robot_img, text="")
 no_event_label = ctk.CTkLabel(frame_event_list,width=200, height=50, text="Actualmente no hay ningun turno agendado... :(", font=("roboto", 20, "bold"))
@@ -262,7 +269,7 @@ filter_button = ctk.CTkButton(frame2, text="", image=filter_img, fg_color="trans
 filter_button_option = ctk.CTkOptionMenu(frame2, fg_color="#442B2B",width=100, height=10, values=filtros,font=("roboto",20, "bold"), dropdown_fg_color="#442B2B", button_color="#442B2B")
 filter_button_close = ctk.CTkButton(filter_button_option, text="x", fg_color="#251919", hover_color= "#7A6767", width=15, height=15, font=("roboto", 20, "bold"), command=filter_close)
 confirm_button = ctk.CTkButton(frame_anadir, text="Confirmar", fg_color="#251919", hover_color="#7A6767", width=10, height=15, command=confirm, font=("roboto", 20, "bold"))
-event_information_button = ctk.CTkButton(frame_anadir, text="i", fg_color="#251919", hover_color="#7A6767", width=15, height=10, 
+event_information_button = ctk.CTkButton(frame_anadir, text="", image=info_img, fg_color="transparent", hover_color="#7A6767", width=5, height=10, 
                                          corner_radius=100, command=informacion, font=("roboto", 20, "bold"))
 
 ##Radios

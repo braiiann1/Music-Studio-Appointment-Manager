@@ -8,11 +8,11 @@ class Eventos:
         self.description = description
 
 EVENTOS = [
-    Eventos (901, "Grabacion de single", 1, 500, 4, "Grabacion de una unica cancion o pieza"),
-    Eventos (902, "Grabacion de mixtape", 4, 3000, 5, "Grabacion de varias canciones de forma que conformen un mismo proyecto, funciona como una combinacion de varios singles"),
-    Eventos (903, "Grabacion de EP", 4, 2000, 4, "Grabacion de un proyecto sencillo de corta duracion, pero con un trabajo productivo similar al de un album"),
-    Eventos (904, "Grabacion de Album", 8, 5000, 7, "Grabacion de un proyecto de duracion considerable, maxima forma de expresion artistica en el ambito musical"),
-    Eventos (905, "Grabacion de Banda Sonora/OST", 36, 20000, 9, "Grabacion de un proyecto con un costo de produccion considerable, se requiere de una alta inversion por ambas partes para lograr esta sesion")
+    Eventos (901, "Grabacion de single", 1, 500, 4, "Produccion de una  cancion destinada a lanzarse como sencillo independiente."),
+    Eventos (902, "Grabacion de mixtape", 4, 3000, 5, "Un mixtape es una recopilacion de varias canciones reunidas en un solo proyecto y difundidas de forma mas libre e informal que un album."),
+    Eventos (903, "Grabacion de EP", 4, 2000, 4, "Grabacion de un proyecto sencillo de corta duracion, pero con un trabajo productivo similar al de un album."),
+    Eventos (904, "Grabacion de Album", 8, 5000, 7, "Grabacion de un proyecto de duracion considerable, pensado para mostrar la identidad artistica de quien lo crea."),
+    Eventos (905, "Grabacion de Banda Sonora/OST", 36, 20000, 9, "Proyecto destinado a acompanar una pelicula, serie, videojuego u obra audiovisual, emplea una considerable cantidad de recursos.")
 ]
 
 class Salas:
@@ -26,9 +26,9 @@ class Salas:
         self.description = description
 
 SALAS = [
-    Salas (1, "Sala A - Singular", 2, 500, 2, 6, "Sala para proyectos de un solo artista con alguna colaboracion"),
-    Salas (2, "Sala B - MultiPersonal", 10, 1000, 5, 8, "Sala para proyectos profesionales o de bandas emergentes, admite varios instrumentos, equipos y es la mas completa para el artista casual"),
-    Salas (3, "Sala C - Profesional", 50, 4000, 10, 10, "Sala de capacidad considerable para proyectos a gran escala. Ej; Orquestas, Bandas sonoras, Coros") ]
+    Salas (1, "Sala A - Singular", 2, 500, 2, 6, "Sala basica para proyectos sencillos de un solo artista con alguna colaboracion."),
+    Salas (2, "Sala B - MultiPersonal", 10, 1000, 5, 8, "Sala avanzada para proyectos profesionales y pulidos, ideal para bandas independientes o musicos en desarrollo, admite una amplia gama de equipamiento profesional y presenta una acustica de calidad."),
+    Salas (3, "Sala C - Profesional", 50, 4000, 10, 10, "Sala de capacidad considerable para proyectos a gran escala. Ej; Orquestas, Bandas sonoras, Coros.") ]
 
 class Equipos_Audio:
     def __init__(self, id, name, category, quantity, requires_technician):
@@ -37,6 +37,7 @@ class Equipos_Audio:
         self.category = category # "microfono", "instrumento", "monitor", "software de audio", "soundcard", "amplificador"
         self.quantity = quantity
         self.requires_technician = requires_technician
+
 EQUIPOS = [
     Equipos_Audio (101, "Microfono Profesional", "microfono", 5, False),
     Equipos_Audio (102, "Guitarra Fender Stratocaster", "instrumento", 1, True),

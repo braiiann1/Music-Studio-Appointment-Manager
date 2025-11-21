@@ -19,11 +19,11 @@ def validation(event,room, hour, inventory):
     if len(hour[0]) == 0 or len(hour[1]) == 0:
         return (False,"Debe asignar la hora de incio y culminacion")
 
-    if int(str(hour[0][0]) + str (hour[0][1])) > 23 or int(str(hour[0][3]) + str (hour[0][4])) > 59:
-        return (False, "Formato de hora incorrecto")
-
     if len(hour[0]) != 5 or len(hour[1]) != 5:
         return (False,"Formato incorrecto para la hora")
+
+    if int(str(hour[0][0]) + str (hour[0][1])) > 23 or int(str(hour[0][3]) + str (hour[0][4])) > 59:
+        return (False, "Formato de hora incorrecto")
     
     if int(str(hour[0][0]) + str(hour[0][1]) + str(hour[0][3]) + str(hour[0][4])) > int(str(hour[1][0]) + str(hour[1][1]) + str(hour[1][3]) + str(hour[1][4])): #and day_start == day end 
         return (False,"Fecha inicial no puede ser mayor a la fecha de inicio")
@@ -62,7 +62,7 @@ def validation(event,room, hour, inventory):
         
     if event == EVENTOS[3].name:
         if room != SALAS[1].name:
-            return only_possible(EVENTOS[3].name, event)
+            return only_possible(EVENTOS[3].name, SALAS[1].name)
         
         if EQUIPOS[0].name not in inventory:
             return dependant(EQUIPOS[0].name, event)
