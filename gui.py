@@ -2,6 +2,7 @@ import customtkinter as ctk
 from classes import *
 from validation import *
 from PIL import Image
+from pathlib import Path
 
 def start():
     frame1.pack()
@@ -91,7 +92,7 @@ def cancelar():
 
 def filter():
     filter_button.place_forget()
-    filter_button_option.place(relx = 0.78, rely =0.045)
+    filter_button_option.place(relx = 0.78, rely = 0.045)
     filter_button_close.place(relx=0.8, rely=-0.05)
 
 def filter_close():
@@ -198,10 +199,12 @@ label_event_list: object
 
 #Imagenes
 
-add_image = Image.open("/home/braian/PROYECTO/Codigo/Images/add_event.png")
-delete_image = Image.open("/home/braian/PROYECTO/Codigo/Images/delete.png")
-filter_image = Image.open("/home/braian/PROYECTO/Codigo/Images/filter_list.png")
-robot_image = Image.open("/home/braian/PROYECTO/Codigo/Images/no_events.png")
+base_path = Path(__file__).parent / "Images"
+
+add_image = Image.open(base_path / "add_event.png")
+delete_image = Image.open(base_path / "delete.png")
+filter_image = Image.open(base_path / "filter_list.png")
+robot_image = Image.open(base_path / "no_events.png")
 add_img = ctk.CTkImage(light_image=add_image, dark_image=add_image, size=(25,25))
 del_img = ctk.CTkImage(light_image=delete_image, dark_image=delete_image, size=(30,30))
 filter_img = ctk.CTkImage(light_image=filter_image, dark_image=filter_image, size=(30,30))
