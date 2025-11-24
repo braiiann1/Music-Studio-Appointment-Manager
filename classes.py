@@ -67,3 +67,15 @@ TECNICOS = [
     Tecnicos (204, "l' talent miliciah", "calibracion", 100, "12:00-00:00"),
     Tecnicos (205, "Pepito la curda", "produccion", 250, "12:00-18:00")
 ]
+
+def dias():
+    dias = []
+    for i in range(1,32):
+        dias.append(str(i))
+    return dias
+
+def meses():
+    months = []
+    for i in range(1,13):
+        months.append(str(i))
+    return months

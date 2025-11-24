@@ -38,6 +38,14 @@ def anadir():
     start_hour.place(relx = 0.68, rely = 0.22)
     end_hour.place(relx = 0.85, rely = 0.22)
     confirm_button.place(relx = 0.80, rely = 0.88)
+    day_button.place(x=400, y=85)
+    day_button_end.place(x=460, y=85)
+    month_button.place(x=680, y=200)
+    year_button.place(x=680, y=240)
+    dia_label = ctk.CTkLabel(frame_anadir, width=30, height=15,fg_color="transparent", text="Dia Inicio-Fin", font=("roboto", 20))
+    mes_ano_label = ctk.CTkLabel(frame_anadir, width=30, height=15, fg_color="transparent", text="Mes/Ano", font=("roboto", 20))
+    dia_label.place(x=400,y=55)
+    mes_ano_label.place(x=680, y=130)
 
     #Radios
     rx, ry = 0.1, 0.4
@@ -58,17 +66,27 @@ def confirm():
     evento = eventos_opciones.get()
     sala = salas_opciones.get()
     horario = (start_hour.get(), end_hour.get())
+    mes = month_button.get()
+    year = year_button.get()
+    day = day_button.get()
+    day_end = day_button_end.get()
     inventario.clear()
     for i in radios:
         if i.get():
             inventario.append(i.cget("text"))
-    full_event = [evento,sala,horario,inventario.copy()]
-    if (validation(full_event[0], full_event[1], full_event[2],full_event[3]))[0]:
+    full_event = [evento,sala,horario,inventario.copy(),(day, day_end), mes, year]
+    is_validated = validation(full_event[0], full_event[1], full_event[2], full_event[3], full_event[4], full_event[5], full_event[6])
+    if is_validated[0]:
         lista_eventos.append(full_event)
         frame_succes.place(relx=0.4,rely=0.93)
+        label_succes.configure(text = "Evento anadido con exito :D")
         label_succes.pack()
         window.after(5000, success_forget)
-    else: print(validation(full_event[0], full_event[1], full_event[2],full_event[3]))
+    else: 
+        label_succes.configure(text = is_validated[1])
+        frame_succes.place(rely = 0.93, relx = 0.35)
+        label_succes.pack(side = 'bottom')
+        window.after(10000, success_forget)
 
 def success_forget():
     frame_succes.place_forget()
@@ -83,7 +101,7 @@ def editar_rearrange():
     for i in range(len(lista_eventos)):
         label_event_delete = ctk.CTkButton(frame_event_list, image=del_img,text="", fg_color="#251919", hover_color= "#7A6767", width=15, height=15,
                                                 corner_radius=100, font=("roboto", 30, "bold"), command=lambda idx=i : eliminar(idx))
-        label_event_delete.grid(row = i, column = 5, padx = 20, pady = 10)
+        label_event_delete.grid(row = i, column = 6, padx = 20, pady = 10)
 
 def cancelar():
     edit_button.configure(text="Editar", command = editar), add_button.place(relx = 0.94, rely = 0.04)
@@ -143,10 +161,18 @@ def render_grid():
             label_event_hour = ctk.CTkLabel(frame_event_list,text=lista_eventos[i][2][0]+"-"+lista_eventos[i][2][1], font=("roboto", 20, "bold"), compound="left")
             label_event_hour.grid(row = i, column=2, padx=20, pady=15)
 
+            label_event_date = ctk.CTkLabel(frame_event_list,text=lista_eventos[i][4][0]+"/"+lista_eventos[i][5]+"/"+lista_eventos[i][6], compound="left", font=("roboto", 20, "bold"))
+            label_event_date.grid(row=i, column=5, padx=20, pady=15)
+
             label_event_info = ctk.CTkButton(frame_event_list, text="Info.", fg_color="#503636", hover_color="#7A6767", width=15, height=15, 
-                                         corner_radius=100, font=("roboto", 20, "bold"), command= lambda idx=i : check_inventory(idx))
-            label_event_info.grid(row = i, column=3, padx=20, pady=15)
-            
+                                         corner_radius=100, font=("roboto", 20, "bold"), command= info)
+            label_event_info.grid(row = i, column=4, padx=20, pady=15)
+
+def info():
+    frame_event_list.place_forget()
+    frame_info = ctk.CTkFrame(frame2, width=500, height=500, corner_radius= 20)
+    label_info = ctk.CTkLabel(frame_info, text="Info del turno", font=("roboto", 20, "bold"))
+
 def check_inventory(indice):
     current_inventory = lista_eventos[indice][3]
     print(current_inventory) 
@@ -165,7 +191,13 @@ def radio_press(radio):
         radio.value = 1
     else: radio.value = 0
 
-def validar_start(texto:str):        
+def validar_start(texto:str): 
+    for i, ch in enumerate(texto):
+        if i == 2 and ch != ":":
+            return False
+        if i != 2 and not ch.isdigit():
+            return False
+               
     if len(texto) == 5:
         if int(texto[3]+texto[4]) > 59:
             return False
@@ -174,11 +206,7 @@ def validar_start(texto:str):
         return True
     if len(texto) > 5:
         return False
-    for i, ch in enumerate(texto):
-        if i == 2 and ch != ":":
-            return False
-        if i != 2 and not ch.isdigit():
-            return False
+    
     return True
 
 def hover_information():
@@ -199,6 +227,8 @@ lista_eventos:list = []
 botones_eliminar: dict
 inventario:list = []
 label_event_list: object
+day_values = dias()
+month_values = meses()
 
 #Imagenes
 
@@ -271,6 +301,10 @@ filter_button_close = ctk.CTkButton(filter_button_option, text="x", fg_color="#2
 confirm_button = ctk.CTkButton(frame_anadir, text="Confirmar", fg_color="#251919", hover_color="#7A6767", width=10, height=15, command=confirm, font=("roboto", 20, "bold"))
 event_information_button = ctk.CTkButton(frame_anadir, text="", image=info_img, fg_color="transparent", hover_color="#7A6767", width=5, height=10, 
                                          corner_radius=100, command=informacion, font=("roboto", 20, "bold"))
+day_button = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius=10, dropdown_fg_color="#2b1d1d", button_color="#2b1d1d", values=day_values, font=("roboto", 20), dropdown_font=("roboto", 10))
+day_button_end = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius=10, dropdown_fg_color="#2b1d1d", button_color="#2b1d1d", values=day_values, font=("roboto", 20), dropdown_font=("roboto", 10))
+month_button = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius= 10, dropdown_fg_color="#2B1D1D", button_color="#2b1d1d", values=month_values, font=("roboto", 20), dropdown_font=("roboto", 20))
+year_button = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius= 10, dropdown_fg_color="#2B1D1D", button_color="#2b1d1d", values=["2025","2026","2027","2028","2029","2030"], font=("roboto", 20), dropdown_font=("roboto", 20))
 
 ##Radios
 radios = []

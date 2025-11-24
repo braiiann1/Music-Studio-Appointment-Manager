@@ -1,6 +1,5 @@
 from classes import *
 
-
 def only_possible(evento:str, sala:str):
     return (False,f"{evento} solo es posible en {sala}")
 
@@ -13,9 +12,13 @@ def incompatible(equipo):
 def excluyentes(equipo1, equipo2):
     return (False,f"{equipo1} es incompatible con {equipo2}")
 
-def validation(event,room, hour, inventory):
+def validation(event,room, hour, inventory, days, month, year):
 
     #Validacion por fecha/hora
+
+    if days[1] < days[0]:
+        return (False, "Dia de fin no puede ser menor que dia de inicio")
+
     if len(hour[0]) == 0 or len(hour[1]) == 0:
         return (False,"Debe asignar la hora de incio y culminacion")
 
@@ -30,10 +33,6 @@ def validation(event,room, hour, inventory):
     
 #   if day_start > day_end:
 #       return (False,"Dia inicial no puede ser mayor a dia de fin")
-
-#   if month_start != month_end:
-#       return (False,"Mes inicial no puede ser mayor a mes de fin")
-    
 
     #Validacion por eventos
     if event == EVENTOS[0].name:
