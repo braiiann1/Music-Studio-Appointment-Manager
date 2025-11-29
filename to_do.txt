@@ -1,9 +1,0 @@
-Pendientes:
-
-- Colision fecha/hora
-- Funcion buscar hueco
-
-Una vez terminado, futura implementacion:
-
-- Recursos por cantidades
-- Tecnicos

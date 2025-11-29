@@ -31,11 +31,8 @@ def validation(event,room, hour, inventory, days, month, year, event_list):
     if int(str(hour[0][0]) + str (hour[0][1])) > 23 or int(str(hour[0][3]) + str (hour[0][4])) > 59:
         return (False, "Formato de hora incorrecto")
     
-    if int(str(hour[0][0]) + str(hour[0][1]) + str(hour[0][3]) + str(hour[0][4])) > int(str(hour[1][0]) + str(hour[1][1]) + str(hour[1][3]) + str(hour[1][4])): #and day_start == day end 
-        return (False,"Fecha inicial no puede ser mayor a la fecha de inicio")
-    
-#   if day_start > day_end:
-#       return (False,"Dia inicial no puede ser mayor a dia de fin")
+    if int(str(hour[0][0]) + str(hour[0][1]) + str(hour[0][3]) + str(hour[0][4])) > int(str(hour[1][0]) + str(hour[1][1]) + str(hour[1][3]) + str(hour[1][4])) and days[0] == days[1]:
+        return (False,"Hora inicial no puede ser mayor a la hora de inicio")
 
     #Validacion por eventos
     if event == EVENTOS[0].name:

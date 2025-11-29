@@ -48,6 +48,10 @@ def anadir():
     mes_ano_label.place(x=680, y=130)
 
     #Radios
+
+    for i in range(11):
+        radios.append(ctk.CTkCheckBox(frame_anadir, text=EQUIPOS[i].name+" ("+ str(EQUIPOS[i].quantity) +")", hover_color="#6D5757", font=radio_font, corner_radius= 90))
+
     rx, ry = 0.1, 0.4
 
     for i in range(11):
@@ -74,9 +78,20 @@ def confirm():
     for i in radios:
         if i.get():
             inventario.append(i.cget("text"))
+    for i in range(len(inventario)):
+        for j in range(10):
+            inventario[i] = inventario[i].strip(")")
+            inventario[i] = inventario[i].strip(f"{j}")
+            inventario[i] = inventario[i].strip("(")
+            inventario[i] = inventario[i].strip(" ")
+    print(inventario)
     full_event = [evento,sala,horario,inventario.copy(),(day, day_end), mes, year]
     is_validated = validation(full_event[0], full_event[1], full_event[2], full_event[3], full_event[4], full_event[5], full_event[6], lista_eventos)
     if is_validated[0]:
+        reducir_cantidad(inventario)
+        for i in range(len(radios)):
+            radios[i].configure(text=EQUIPOS[i].name+" ("+ str(EQUIPOS[i].quantity) +")")
+        print(EQUIPOS[0].quantity)
         lista_eventos.insert(0 ,full_event)
         frame_succes.place(relx=0.4,rely=0.93)
         label_succes.configure(text = "Evento anadido con exito :D")
@@ -96,7 +111,7 @@ def editar():
         add_button.place_forget()
 
         editar_rearrange()
-        
+
 def editar_rearrange():
     for i in range(len(lista_eventos)):
         label_event_delete = ctk.CTkButton(frame_event_list, image=del_img,text="", fg_color="#251919", hover_color= "#7A6767", width=15, height=15,
@@ -274,6 +289,7 @@ radio_font = ("roboto", 18, "bold")
 
 #Seteo de GUI
 
+radios = []
 lista_eventos:list = []
 botones_eliminar: dict
 inventario:list = []
@@ -358,12 +374,6 @@ day_button = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, heigh
 day_button_end = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius=10, dropdown_fg_color="#2b1d1d", button_color="#2b1d1d", values=day_values, font=("roboto", 20), dropdown_font=("roboto", 10))
 month_button = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius= 10, dropdown_fg_color="#2B1D1D", button_color="#2b1d1d", values=month_values, font=("roboto", 20), dropdown_font=("roboto", 20))
 year_button = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius= 10, dropdown_fg_color="#2B1D1D", button_color="#2b1d1d", values=["2025","2026","2027","2028","2029","2030"], font=("roboto", 20), dropdown_font=("roboto", 20))
-
-##Radios
-radios = []
-
-for i in range(11):
-    radios.append(ctk.CTkCheckBox(frame_anadir, text=EQUIPOS[i].name, hover_color="#6D5757", font=radio_font, corner_radius= 90))
 
 ##Cerrar
 button_cerrar_anadir = ctk.CTkButton(frame_anadir, text="X", corner_radius=100, hover_color="#251818", command=anadir_cerrar, width=30, height=30, fg_color="#160E0E")
