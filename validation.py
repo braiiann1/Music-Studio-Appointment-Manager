@@ -12,12 +12,15 @@ def incompatible(equipo):
 def excluyentes(equipo1, equipo2):
     return (False,f"{equipo1} es incompatible con {equipo2}")
 
-def validation(event,room, hour, inventory, days, month, year):
+def validation(event,room, hour, inventory, days, month, year, event_list):
 
+    if [event, room, hour, inventory, days, month, year] in event_list:
+        return False, "Que metes pipo?"
+    
     #Validacion por fecha/hora
 
     if days[1] < days[0]:
-        return (False, "Dia de fin no puede ser menor que dia de inicio")
+        return (False, "Dia inicial no puede ser mayor a dia de fin")
 
     if len(hour[0]) == 0 or len(hour[1]) == 0:
         return (False,"Debe asignar la hora de incio y culminacion")

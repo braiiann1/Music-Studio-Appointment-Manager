@@ -40,8 +40,8 @@ def anadir():
     confirm_button.place(relx = 0.80, rely = 0.88)
     day_button.place(x=400, y=85)
     day_button_end.place(x=460, y=85)
-    month_button.place(x=680, y=200)
-    year_button.place(x=680, y=240)
+    month_button.place(x=680, y=160)
+    year_button.place(x=680, y=200)
     dia_label = ctk.CTkLabel(frame_anadir, width=30, height=15,fg_color="transparent", text="Dia Inicio-Fin", font=("roboto", 20))
     mes_ano_label = ctk.CTkLabel(frame_anadir, width=30, height=15, fg_color="transparent", text="Mes/Ano", font=("roboto", 20))
     dia_label.place(x=400,y=55)
@@ -75,9 +75,9 @@ def confirm():
         if i.get():
             inventario.append(i.cget("text"))
     full_event = [evento,sala,horario,inventario.copy(),(day, day_end), mes, year]
-    is_validated = validation(full_event[0], full_event[1], full_event[2], full_event[3], full_event[4], full_event[5], full_event[6])
+    is_validated = validation(full_event[0], full_event[1], full_event[2], full_event[3], full_event[4], full_event[5], full_event[6], lista_eventos)
     if is_validated[0]:
-        lista_eventos.append(full_event)
+        lista_eventos.insert(0 ,full_event)
         frame_succes.place(relx=0.4,rely=0.93)
         label_succes.configure(text = "Evento anadido con exito :D")
         label_succes.pack()
@@ -147,7 +147,6 @@ def anadir_cerrar():
     render_grid()
 
 def render_grid():
-    lista_eventos.reverse()
     for i in frame_event_list.winfo_children():
         i.destroy()
 
@@ -165,18 +164,72 @@ def render_grid():
             label_event_date.grid(row=i, column=5, padx=20, pady=15)
 
             label_event_info = ctk.CTkButton(frame_event_list, text="Info.", fg_color="#503636", hover_color="#7A6767", width=15, height=15, 
-                                         corner_radius=100, font=("roboto", 20, "bold"), command= info)
+                                         corner_radius=100, font=("roboto", 20, "bold"), command= lambda idx=i : check_inventory(idx))
             label_event_info.grid(row = i, column=4, padx=20, pady=15)
 
-def info():
-    frame_event_list.place_forget()
-    frame_info = ctk.CTkFrame(frame2, width=500, height=500, corner_radius= 20)
-    label_info = ctk.CTkLabel(frame_info, text="Info del turno", font=("roboto", 20, "bold"))
+def label_insert(inv: list):
+    string = ""
+    for i in inv:
+        string += i+", "
+    return string
 
-def check_inventory(indice):
-    current_inventory = lista_eventos[indice][3]
-    print(current_inventory) 
-         
+def info_cerrar():
+    frame_info.place_forget()
+    frame_event_list.place(relx=0.02,rely=0.13)
+    render_grid()
+
+def check_inventory(idx):
+    current_inventory = lista_eventos[idx][3]
+    frame_event_list.place_forget()
+
+    precio_evento = 0
+    precio_sala = 0
+
+    crrn_inv = ""
+
+    for i in range(len(current_inventory)):
+        if i != len(current_inventory)-1:
+            crrn_inv += current_inventory[i]+", "  
+        else: crrn_inv += current_inventory[i]+"." 
+
+    label_info = ctk.CTkLabel(frame_info, text="Info del turno", font=("roboto", 20, "bold"))
+    info_button = ctk.CTkButton(frame_info, text="x", corner_radius=20, font=("roboto", 20), command=info_cerrar, width=15, height=15, fg_color="#221515", hover_color="#503232")
+    frame_inventory = ctk.CTkScrollableFrame(frame_info, width=410, corner_radius=20, fg_color="#221515")
+    label_inventory = ctk.CTkLabel(frame_inventory, text=crrn_inv, font=("roboto", 20, "bold"), compound="left", wraplength=400)
+
+    label_info_event = ctk.CTkLabel(frame_info, text=(lista_eventos[idx][0]), font=("roboto", 20,"bold"), compound="left")
+    label_info_room = ctk.CTkLabel(frame_info, text=(lista_eventos[idx][1]), font=("roboto", 20,"bold"), compound="left")
+    label_info_hour = ctk.CTkLabel(frame_info, text=(lista_eventos[idx][2]), font=("roboto", 20, "bold"), compound="left")
+    label_info_start_day = ctk.CTkLabel(frame_info, text=(lista_eventos[idx][4][0])+"/"+(lista_eventos[idx][5]), font=("roboto", 15, "bold"))
+    label_info_end_day = ctk.CTkLabel(frame_info, text=(lista_eventos[idx][4][1])+"/"+(lista_eventos[idx][5]), font=("roboto", 15, "bold"))
+
+
+    frame_info.place(x=355,y=80)
+    label_info.place(relx=0.05,rely=0.05)
+    info_button.place(relx=0.9, rely=0.05)
+    label_info_event.place(relx=0.08,rely=0.12)
+    label_info_room.place(relx=0.08,rely = 0.18)
+    label_info_hour.place(relx=0.08,rely = 0.24)
+    label_info_start_day.place(relx=0.08,rely=0.3)
+    label_info_end_day.place(relx= 0.18,rely=0.3)
+
+    for i in range(len(EVENTOS)):
+        if lista_eventos[idx][0] == EVENTOS[i].name:
+            precio_evento = EVENTOS[i].price
+
+    for i in range(len(SALAS)):
+        if lista_eventos[idx][1] == SALAS[i].name:
+            precio_sala = EVENTOS[i].price
+
+    label_title_price = ctk.CTkLabel(frame_info, text = "Precio:", font=("roboto", 20, "bold"), compound="left")
+    label_price = ctk.CTkLabel(frame_info, text = str(precio_evento + precio_sala) + " CUP", font=("roboto", 20, "bold"), compound="left")
+
+    label_title_price.place(relx = 0.7, rely=0.06)
+    label_price.place(relx = 0.7,rely=0.12)
+
+    frame_inventory.place(relx=0.05,rely=0.5)
+    label_inventory.pack()
+    
 def eliminar(indice):
     del lista_eventos[indice]
     render_grid()
@@ -209,8 +262,6 @@ def validar_start(texto:str):
     
     return True
 
-def hover_information():
-    return
 nombre_eventos=[]
 for i in range(len(EVENTOS)):
     nombre_eventos.append(EVENTOS[i].name)
@@ -265,6 +316,8 @@ frame_anadir = ctk.CTkFrame(window, fg_color="#3A2626", bg_color="#221515", widt
 frame_event_list = ctk.CTkScrollableFrame(frame2, fg_color="#442B2B", bg_color="transparent", width=1100, height=430, corner_radius=40, scrollbar_button_color="#8A4E4E", scrollbar_button_hover_color="#BB7777")
 
 frame_informacion = ctk.CTkFrame(window, fg_color="#3A2626", bg_color="#221515", width= 800, height=400, corner_radius=40, )
+frame_info = ctk.CTkFrame(frame2, width=500, height=500, corner_radius= 30, fg_color="#442b2b", bg_color="transparent")
+
 
 #Labels
 titulo = ctk.CTkLabel(frame1, width=500, height=70, text='Estudio Musical "Botaos Gang"', font=("roboto", 25, "bold"))
