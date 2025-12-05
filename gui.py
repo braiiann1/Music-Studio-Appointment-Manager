@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import json
 from classes import *
 from validation import *
 from PIL import Image
@@ -50,7 +51,7 @@ def anadir():
     #Radios
 
     for i in range(11):
-        radios.append(ctk.CTkCheckBox(frame_anadir, text=EQUIPOS[i].name+" ("+ str(EQUIPOS[i].quantity) +")", hover_color="#6D5757", font=radio_font, corner_radius= 90))
+        radios.append(ctk.CTkCheckBox(frame_anadir, text=EQUIPOS[i].name, hover_color="#6D5757", font=radio_font, corner_radius= 90))
 
     rx, ry = 0.1, 0.4
 
@@ -78,20 +79,9 @@ def confirm():
     for i in radios:
         if i.get():
             inventario.append(i.cget("text"))
-    for i in range(len(inventario)):
-        for j in range(10):
-            inventario[i] = inventario[i].strip(")")
-            inventario[i] = inventario[i].strip(f"{j}")
-            inventario[i] = inventario[i].strip("(")
-            inventario[i] = inventario[i].strip(" ")
-    print(inventario)
     full_event = [evento,sala,horario,inventario.copy(),(day, day_end), mes, year]
     is_validated = validation(full_event[0], full_event[1], full_event[2], full_event[3], full_event[4], full_event[5], full_event[6], lista_eventos)
     if is_validated[0]:
-        reducir_cantidad(inventario)
-        for i in range(len(radios)):
-            radios[i].configure(text=EQUIPOS[i].name+" ("+ str(EQUIPOS[i].quantity) +")")
-        print(EQUIPOS[0].quantity)
         lista_eventos.insert(0 ,full_event)
         frame_succes.place(relx=0.4,rely=0.93)
         label_succes.configure(text = "Evento anadido con exito :D")
@@ -175,7 +165,7 @@ def render_grid():
             label_event_hour = ctk.CTkLabel(frame_event_list,text=lista_eventos[i][2][0]+"-"+lista_eventos[i][2][1], font=("roboto", 20, "bold"), compound="left")
             label_event_hour.grid(row = i, column=2, padx=20, pady=15)
 
-            label_event_date = ctk.CTkLabel(frame_event_list,text=lista_eventos[i][4][0]+"/"+lista_eventos[i][5]+"/"+lista_eventos[i][6], compound="left", font=("roboto", 20, "bold"))
+            label_event_date = ctk.CTkLabel(frame_event_list,text=(lista_eventos[i][4][0]+"/"+lista_eventos[i][5]+"/"+lista_eventos[i][6])+"-"+(lista_eventos[i][4][1]+"/"+lista_eventos[i][5]+"/"+lista_eventos[i][6]), compound="left", font=("roboto", 20, "bold"))
             label_event_date.grid(row=i, column=5, padx=20, pady=15)
 
             label_event_info = ctk.CTkButton(frame_event_list, text="Info.", fg_color="#503636", hover_color="#7A6767", width=15, height=15, 

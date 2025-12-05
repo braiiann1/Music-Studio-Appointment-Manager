@@ -16,19 +16,19 @@ EVENTOS = [
 ]
 
 class Salas:
-    def __init__(self, id, name, capacity, hourly_rate, min_booking_hours, max_complexity, description):
+    def __init__(self, id, name, quantity, hourly_rate, min_booking_hours, max_complexity, description):
         self.id = id
         self.name = name
-        self.capacity = capacity
+        self.quantity = quantity
         self.hourly_rate = hourly_rate
         self.min_booking_hours = min_booking_hours # minimo requerido para la reserva
         self.max_complexity = max_complexity
         self.description = description
 
 SALAS = [
-    Salas (1, "Sala A - Singular", 2, 500, 2, 6, "Sala basica para proyectos sencillos de un solo artista con alguna colaboracion."),
-    Salas (2, "Sala B - MultiPersonal", 10, 1000, 5, 8, "Sala avanzada para proyectos profesionales y pulidos, ideal para bandas independientes o musicos en desarrollo, admite una amplia gama de equipamiento profesional y presenta una acustica de calidad."),
-    Salas (3, "Sala C - Profesional", 50, 4000, 10, 10, "Sala de capacidad considerable para proyectos a gran escala. Ej; Orquestas, Bandas sonoras, Coros.") ]
+    Salas (1, "Sala A - Singular", 8, 500, 2, 6, "Sala basica para proyectos sencillos de un solo artista con alguna colaboracion."),
+    Salas (2, "Sala B - MultiPersonal", 5, 1000, 5, 8, "Sala avanzada para proyectos profesionales y pulidos, ideal para bandas independientes o musicos en desarrollo, admite una amplia gama de equipamiento profesional y presenta una acustica de calidad."),
+    Salas (3, "Sala C - Profesional", 2, 4000, 10, 10, "Sala de capacidad considerable para proyectos a gran escala. Ej; Orquestas, Bandas sonoras, Coros.") ]
 
 class Equipos_Audio:
     def __init__(self, id, name, category, quantity, requires_technician):
@@ -80,7 +80,7 @@ def meses():
         months.append(str(i))
     return months
 
-def reducir_cantidad(inv:list):
-    for i in range(len(inv)):
-        if inv[i] == EQUIPOS[i].name:
-            EQUIPOS[i].quantity -= 1
+resource_pool: dict
+
+def revisar_cantidades():
+    pass
