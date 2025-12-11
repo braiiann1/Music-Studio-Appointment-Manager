@@ -1,3 +1,5 @@
+import json
+
 class Eventos:
     def __init__(self, id, name, min_booking_hours, price, complexity_index, description):
         self.id = id
@@ -84,3 +86,10 @@ resource_pool: dict
 
 def revisar_cantidades():
     pass
+
+class Event_list:
+    lista_eventos = []
+
+def save_json():
+    with open("eventos.json","r",encoding="utf-8") as fp:
+        Event_list.lista_eventos = json.load(fp)
