@@ -47,7 +47,7 @@ def anadir():
     month_button.place(x=680, y=160)
     year_button.place(x=680, y=200)
     dia_label = ctk.CTkLabel(frame_anadir, width=30, height=15,fg_color="transparent", text="Dia Inicio-Fin", font=("roboto", 20))
-    mes_ano_label = ctk.CTkLabel(frame_anadir, width=30, height=15, fg_color="transparent", text="Mes/Ano", font=("roboto", 20))
+    mes_ano_label = ctk.CTkLabel(frame_anadir, width=30, height=15, fg_color="transparent", text="Mes/Año", font=("roboto", 20))
     dia_label.place(x=400,y=55)
     mes_ano_label.place(x=680, y=130)
 

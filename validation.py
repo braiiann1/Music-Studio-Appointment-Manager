@@ -15,25 +15,37 @@ def incompatible(equipo):
 def excluyentes(equipo1, equipo2):
     return (False,f"{equipo1} es incompatible con {equipo2}")
 
-def revisar_cantidades(evento:list, lista_eventos:list, diccionario:dict) -> dict:
-    counter = 0
-    for equipo in range(len(EQUIPOS)):
-        for i in  lista_eventos:
-            for l in i[3]:
-                for j in evento[3]:
-                    if EQUIPOS[equipo].name == j:
-                        counter += 1
+def revisar_cantidades(evento:list, lista_eventos:list) -> tuple:
+
+    #Diccionario para almacenar la cantidad utilizada en funcion al recurso
+    usados = {}
+
+    #Recorro la lista de eventos
+    for i in lista_eventos:
+
+        #Recorro el inventario de cada evento
+        for j in i[3]:
+            if j in usados:
+                usados[j] = {j:usados[j]+1}
+            else: usados.update({j:1})
+
+    #Recorro el inventario del evento nuevo
+    for i in evento[3]:
+        if i in usados:
+            usados[j] = ({j:usados[j]+1})
+        else: usados.update({j:1})
+
+    print(usados.items())
+
+    #Tiro cantidad del dict contra la de las clases para verificar que no haya excedente
+    for i in range(len(EQUIPOS)):
+        for equipo,cant in usados.items():
+            if EQUIPOS[i].name == equipo:
+                if cant > EQUIPOS[i].quantity:
+                    return (False,f"{equipo}, no puede exceder una cantidad superior a {cant}")
+         
 
 def validation(event,room, hour, inventory, days, month, year, event_list):
-
-    #Validacion por cantidad
-    if [event, room, hour, inventory, days, month, year] in event_list:
-        return False, "Que metes pipo?"
-    
-    #Validacion por fecha/hora
-
-    ##Validacion por fecha:
-
 
     if days[1] < days[0]:
         return (False, "Dia inicial no puede ser mayor a dia de fin")
@@ -137,16 +149,10 @@ def validation(event,room, hour, inventory, days, month, year, event_list):
     if EQUIPOS[4].name in inventory and EQUIPOS[6].name not in inventory:
         return (False, "El software de audio depende de la tarjeta de sonido")
 
-    horario = (dt.time(int(hour[0][0]+hour[0][1])), dt.time(int(hour[1][0]+hour[1][1])))
-    for i in range(len(event_list)):
-        ###Fecha de culminacion de evento i > fecha de inicio
-        if int(hour[1][0]+hour[1][1]) > int(event_list[i][2][0][0]+event_list[i][2][0][1]):
-            #Revisar cantidades()
-            pass
-
-        ###Fecha de inicio < fecha de culminacion de evento i
-        if int(hour[1][0]+hour[1][1]) < int(event_list[i][2][1][0]+event_list[i][2][1][1]):
-            #Revisar cantidades()
-            pass
+    #horario = (dt.time(int(hour[0][0]+hour[0][1])), dt.time(int(hour[1][0]+hour[1][1])))
+    for i in event_list:
+        ###Fecha de culminacion de evento i > fecha de inicio         ###Fecha de inicio < fecha de culminacion de evento i
+        if int(hour[1][0]+hour[1][1]) > int(i[2][0][0]+i[2][0][1]) or int(hour[1][0]+hour[1][1]) < int(i[2][1][0]+i[2][1][1]):
+            revisar_cantidades(event, event_list)
 
     return (True, "Evento anadido con exito")
