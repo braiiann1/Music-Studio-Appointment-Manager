@@ -285,6 +285,9 @@ def check_days(mes, ano):
     day_button.configure(values=dias)
     day_button_end.configure(values=dias)
 
+def actualizar(_):
+    check_days(month_button.get(), year_button.get())
+
 nombre_eventos=[]
 for i in range(len(EVENTOS)):
     nombre_eventos.append(EVENTOS[i].name)
@@ -379,7 +382,7 @@ event_information_button = ctk.CTkButton(frame_anadir, text="", image=info_img, 
                                          corner_radius=100, command=informacion, font=("roboto", 20, "bold"))
 day_button = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius=10, dropdown_fg_color="#2b1d1d", button_color="#2b1d1d", values=day_values, font=("roboto", 20), dropdown_font=("roboto", 10))
 day_button_end = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius=10, dropdown_fg_color="#2b1d1d", button_color="#2b1d1d", values=day_values, font=("roboto", 20), dropdown_font=("roboto", 10))
-year_button = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius= 10, dropdown_fg_color="#2B1D1D", button_color="#2b1d1d", values=["2026","2027","2028","2029","2030","2031","2032"], font=("roboto", 20), dropdown_font=("roboto", 20))
+year_button = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius= 10, dropdown_fg_color="#2B1D1D", button_color="#2b1d1d", values=["2026","2027","2028","2029","2030","2031","2032"], command=actualizar, font=("roboto", 20), dropdown_font=("roboto", 20))
 month_button = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius= 10, dropdown_fg_color="#2B1D1D", button_color="#2b1d1d", values=month_values, command=lambda _: check_days(month_button.get(), year_button.get()), font=("roboto", 20), dropdown_font=("roboto", 20))
 
 
