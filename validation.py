@@ -1,5 +1,4 @@
 from classes import *
-import datetime as dt
 
 cantidades: dict
 
@@ -26,16 +25,14 @@ def revisar_cantidades(evento:list, lista_eventos:list) -> tuple:
         #Recorro el inventario de cada evento
         for j in i[3]:
             if j in usados:
-                usados[j] = {j:usados[j]+1}
-            else: usados.update({j:1})
+                usados[j] += 1
+            else: usados[j] = 1
 
     #Recorro el inventario del evento nuevo
     for i in evento[3]:
         if i in usados:
-            usados[j] = ({j:usados[j]+1})
-        else: usados.update({j:1})
-
-    print(usados.items())
+            usados[j] += 1
+        else: usados[j] = 1
 
     #Tiro cantidad del dict contra la de las clases para verificar que no haya excedente
     for i in range(len(EQUIPOS)):
@@ -43,11 +40,12 @@ def revisar_cantidades(evento:list, lista_eventos:list) -> tuple:
             if EQUIPOS[i].name == equipo:
                 if cant > EQUIPOS[i].quantity:
                     return (False,f"{equipo}, no puede exceder una cantidad superior a {cant}")
-         
+              
+    return(True, "Evento anadido con exito :D")
 
 def validation(event,room, hour, inventory, days, month, year, event_list):
 
-    if days[1] < days[0]:
+    if int(days[0]) > int(days[1]):
         return (False, "Dia inicial no puede ser mayor a dia de fin")
 
     if len(hour[0]) == 0 or len(hour[1]) == 0:
@@ -153,6 +151,6 @@ def validation(event,room, hour, inventory, days, month, year, event_list):
     for i in event_list:
         ###Fecha de culminacion de evento i > fecha de inicio         ###Fecha de inicio < fecha de culminacion de evento i
         if int(hour[1][0]+hour[1][1]) > int(i[2][0][0]+i[2][0][1]) or int(hour[1][0]+hour[1][1]) < int(i[2][1][0]+i[2][1][1]):
-            revisar_cantidades(event, event_list)
+            return(revisar_cantidades(event, event_list))
 
     return (True, "Evento anadido con exito")
