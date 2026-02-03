@@ -93,6 +93,12 @@ def confirm():
         label_succes.configure(text = "Evento anadido con exito :D")
         label_succes.pack()
         window.after(5000, success_forget)
+    if is_validated[1] == "forbello":
+        frame_hole.place(relx=0.5,rely=0.5)
+        message_label.configure(text=f"El turno en el horario comprendido no se puede agendar pues {is_validated[2]}, por tanto se le sugiere anadir el turno en el horario de {is_validated[3][2]}, del {is_validated[3][4]}/{is_validated[3][5]}/{is_validated[3][6]}")
+        message_label.place(relx=0.2,rely=0.2)
+        cancel_button_hole.place(relx=0.2,rely=0.8)
+        confirm_button_hole.place(relx=0.6, rely=0.8)
     else: 
         label_succes.configure(text = is_validated[1])
         frame_succes.place(rely = 0.93, relx = 0.35)
@@ -101,6 +107,9 @@ def confirm():
 
 def success_forget():
     frame_succes.place_forget()
+
+def cancel_hole():
+    frame_hole.place_forget()
 
 def editar():
         edit_button.configure(text="Cancelar", width=40, command = cancelar)
@@ -288,6 +297,9 @@ def check_days(mes, ano):
 def actualizar(_):
     check_days(month_button.get(), year_button.get())
 
+def confirmar_hole():
+    pass
+
 nombre_eventos=[]
 for i in range(len(EVENTOS)):
     nombre_eventos.append(EVENTOS[i].name)
@@ -344,6 +356,7 @@ frame_event_list = ctk.CTkScrollableFrame(frame2, fg_color="#442B2B", bg_color="
 frame_informacion = ctk.CTkFrame(window, fg_color="#3A2626", bg_color="#221515", width= 800, height=400, corner_radius=40, )
 frame_info = ctk.CTkFrame(frame2, width=500, height=500, corner_radius= 30, fg_color="#442b2b", bg_color="transparent")
 
+frame_hole = ctk.CTkFrame(frame_anadir)
 
 #Labels
 titulo = ctk.CTkLabel(frame1, width=500, height=70, text='Estudio Musical "Botaos Gang"', font=("roboto", 25, "bold"))
@@ -355,6 +368,8 @@ eventos_opciones = ctk.CTkOptionMenu(frame_anadir,fg_color="#2B1D1D", values=nom
 salas_opciones = ctk.CTkOptionMenu(frame_anadir,fg_color="#2B1D1D", values=nombre_salas,
                                    font=("roboto", 20, "bold"), button_hover_color="#3D2A2A", width=315,height=42,corner_radius=29, dropdown_fg_color="#2B1D1D", 
                                    button_color="#2B1D1D", dropdown_font=("roboto", 20))
+
+message_label = ctk.CTkLabel(frame_hole, font=("roboto", 20), text="")
 
 eventos_titulo = ctk.CTkLabel(frame2, text="Turnos:", font=("roboto", 20, "bold"), fg_color="#442B2B", corner_radius= 10)
 desde_hasta = ctk.CTkLabel(frame_anadir, text="Horario:", font=("roboto", 27))
@@ -385,7 +400,8 @@ day_button_end = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, h
 year_button = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius= 10, dropdown_fg_color="#2B1D1D", button_color="#2b1d1d", values=["2026","2027","2028","2029","2030","2031","2032"], command=actualizar, font=("roboto", 20), dropdown_font=("roboto", 20))
 month_button = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius= 10, dropdown_fg_color="#2B1D1D", button_color="#2b1d1d", values=month_values, command=lambda _: check_days(month_button.get(), year_button.get()), font=("roboto", 20), dropdown_font=("roboto", 20))
 
-
+cancel_button_hole = ctk.CTkButton(frame_hole, font=("roboto", 20), text="Cancelar", command=cancel_hole)
+confirm_button_hole = ctk.CTkButton(frame_hole, font=("roboto", 20), text="Confirmar", command=confirmar_hole)
 
 ##Cerrar
 button_cerrar_anadir = ctk.CTkButton(frame_anadir, text="X", corner_radius=100, hover_color="#251818", command=anadir_cerrar, width=30, height=30, fg_color="#160E0E")

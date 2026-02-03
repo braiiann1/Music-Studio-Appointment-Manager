@@ -31,41 +31,24 @@ SALAS = [
     Salas (3, "Sala C - Profesional", 2, 4000, 10, "Sala de capacidad considerable para proyectos a gran escala. Ej; Orquestas, Bandas sonoras, Coros.") ]
 
 class Equipos_Audio:
-    def __init__(self, id, name, category, quantity, requires_technician):
+    def __init__(self, id, name, category, quantity):
         self.id = id
         self.name = name
         self.category = category # "microfono", "instrumento", "monitor", "software de audio", "soundcard", "amplificador"
         self.quantity = quantity
-        self.requires_technician = requires_technician
 
 EQUIPOS = [
-    Equipos_Audio (101, "Microfono Profesional", "microfono", 10, False),
-    Equipos_Audio (102, "Guitarra Fender Stratocaster", "instrumento", 1, True),
-    Equipos_Audio (103, "Bateria Acustica Yamaha", "instrumento", 1, True,),
-    Equipos_Audio (104, "Bajo Fender American Vintage", "instrumento", 1, True),
-    Equipos_Audio (105, "Sintetizador 808", "instrumento", 1, False),
-    Equipos_Audio (106, "Monitores de Audio Profesional", "monitor", 3, False),
-    Equipos_Audio (107, "Tarjeta de Sonido", "soundcard", 1, True),
-    Equipos_Audio (108, "Antares Autotune", "software de audio", 1, True),
-    Equipos_Audio (109, "Microfono para bateria", "microfono", 1, False),
-    Equipos_Audio (110, "Amplificador Fender", "amplificador", 2, True),
-    Equipos_Audio (111, "Guitarra Fender Telecaster", "instrumento", 1, True)
-]
-
-class Tecnicos:
-    def __init__(self, id, name, speciality, hourly_rate, available_hours):
-        self.id = id
-        self.name = name
-        self.speciality = speciality # "calibracion (instrumentos, amplificador)" "masterizacion (monitores, soundcard)" "grabacion (microfono)" "produccion (software de audio)"
-        self.hourly_rate = hourly_rate
-        self.available_hours = available_hours # horario laboral
-
-TECNICOS = [
-    Tecnicos (201, "Luisito Lamenza", "produccion", 500, "18:00-00:00"),
-    Tecnicos (202, "Jasiel La Bodega", "grabacion", 250, "12:00-16:00"),
-    Tecnicos (203, "Taylor", "masterizacion", 1000, "8:00-18:00"),
-    Tecnicos (204, "l' talent miliciah", "calibracion", 100, "12:00-00:00"),
-    Tecnicos (205, "Pepito la curda", "produccion", 250, "12:00-18:00")
+    Equipos_Audio (101, "Microfono Profesional", "microfono", 10),
+    Equipos_Audio (102, "Guitarra Fender Stratocaster", "instrumento", 1),
+    Equipos_Audio (103, "Bateria Acustica Yamaha", "instrumento", 1),
+    Equipos_Audio (104, "Bajo Fender American Vintage", "instrumento", 1),
+    Equipos_Audio (105, "Sintetizador 808", "instrumento", 1),
+    Equipos_Audio (106, "Monitores de Audio Profesional", "monitor", 3),
+    Equipos_Audio (107, "Tarjeta de Sonido", "soundcard", 1),
+    Equipos_Audio (108, "Antares Autotune", "software de audio", 1),
+    Equipos_Audio (109, "Microfono para bateria", "microfono", 1),
+    Equipos_Audio (110, "Amplificador Fender", "amplificador", 2),
+    Equipos_Audio (111, "Guitarra Fender Telecaster", "instrumento", 1)
 ]
 def meses():
     months = []

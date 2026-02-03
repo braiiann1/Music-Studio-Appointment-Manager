@@ -1,4 +1,6 @@
 from classes import *
+from datetime import timedelta
+import calendar
 
 cantidades: dict
 
@@ -13,6 +15,48 @@ def incompatible(equipo):
 
 def excluyentes(equipo1, equipo2):
     return (False,f"{equipo1} es incompatible con {equipo2}")
+
+
+def buscar_hueco(evento: list, lista_eventos: list, message: str):
+
+    event_start_hour = timedelta(days= int(evento[4][0]),hours=int(evento[2][0][0]+evento[2][0][1]), minutes=int(evento[2][0][3]+evento[2][0][4]))
+    event_end_hour = timedelta(days= int(evento[4][1]),hours=int(evento[2][1][0]+evento[2][1][1]), minutes=int(evento[2][1][3]+evento[2][1][4]))
+
+    #Duracion del evento para el cual se busca hueco
+    full_intervalo = event_end_hour - event_start_hour
+    print("intervalo:", full_intervalo)
+    for i in range(len(lista_eventos)):
+        #t0 es la hora de finalizacion del evento en el que esta el for, que pasara a ser la hora de inicio en el hueco
+        t0 = timedelta(hours=int(lista_eventos[i][2][1][0]+lista_eventos[i][2][1][1]), minutes=int(lista_eventos[i][2][1][3]+lista_eventos[i][2][1][4]))
+
+        #formato para lograr hora_inicio
+        horasi = t0.seconds //3600
+        minutosi = (t0.seconds%3600)//60
+        hora_inicio = f"{horasi:02d}:{minutosi:02d}"
+
+        #t1 sera hora de finalizacion del evento
+        t1 = hora_inicio + full_intervalo
+        #formato para lograr hora_final
+        dias = t1.days
+        horas = t1.seconds //3600
+        minutos = (t1.seconds%3600)//60
+        hora_final = f"{horas:02d}:{minutos:02d}"
+
+
+        print("hora_inicio:", hora_inicio)
+        print("hora_final:", hora_final)
+        print("dias_intervalo:", dias)
+
+        #Si el dia se pasa del mes:
+        if int(lista_eventos[i][4][1])+dias > calendar.monthrange(int(lista_eventos[i][6]),int(lista_eventos[i][5]))[1]:
+            continue
+
+        new_event = (evento[0], evento[1], (hora_inicio, hora_final), evento[3], lista_eventos[i][4], (lista_eventos[i][5][1],str(int(lista_eventos[i][5][1])+dias)), lista_eventos[i][6])
+
+
+        if validation(new_event[0], new_event[1], new_event[2], new_event[3], new_event[4], new_event[5], new_event[6], lista_eventos):
+            
+            return (False,"forbello", message, new_event)
 
 def revisar_cantidades(evento:list, lista_eventos:list) -> tuple:
 
@@ -147,10 +191,12 @@ def validation(event,room, hour, inventory, days, month, year, event_list):
     if EQUIPOS[4].name in inventory and EQUIPOS[6].name not in inventory:
         return (False, "El software de audio depende de la tarjeta de sonido")
 
-    #horario = (dt.time(int(hour[0][0]+hour[0][1])), dt.time(int(hour[1][0]+hour[1][1])))
+    #Colisiones por cantidades
     for i in event_list:
         ###Fecha de culminacion de evento i > fecha de inicio         ###Fecha de inicio < fecha de culminacion de evento i
         if int(hour[1][0]+hour[1][1]) > int(i[2][0][0]+i[2][0][1]) or int(hour[1][0]+hour[1][1]) < int(i[2][1][0]+i[2][1][1]):
-            return(revisar_cantidades(event, event_list))
+            if revisar_cantidades(event, event_list)[0] != 1:
+                evento_hole = [event, room, hour, inventory, days, month, year, event_list]
+                return buscar_hueco(evento_hole, event_list, revisar_cantidades(evento_hole, event_list)[1])
 
     return (True, "Evento anadido con exito")
