@@ -47,7 +47,7 @@ Pantalla principal:
 
 ## Dominio escogido y por qué
 
-Escogí como dominio un estudio musical porque la música ha sido siempre para mí una forma de expresión personal y colectiva. Trabajar sobre un programa que apoye la creación y organización de turnos en un estudio me permite unir dos intereses musicales y técnicos.
+Escogí como dominio un estudio musical porque la música ha sido siempre para mí una forma de expresión personal y colectiva. Trabajar sobre un programa que apoye la creación y organización de turnos en un estudio me permite unir dos intereses :D.
 
 ## Funciones principales ✨
 
