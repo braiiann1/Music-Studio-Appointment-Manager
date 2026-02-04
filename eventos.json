@@ -1,1 +1,123 @@
-[]
+[
+  [
+    "Grabacion de EP",
+    "Sala A - Singular",
+    [
+      "04:00",
+      "10:00"
+    ],
+    [
+      "Microfono Profesional",
+      "Guitarra Fender Stratocaster",
+      "Amplificador Fender"
+    ],
+    [
+      "13",
+      "13"
+    ],
+    "10",
+    "2026"
+  ],
+  [
+    "Grabacion de mixtape",
+    "Sala A - Singular",
+    [
+      "20:01",
+      "00:02"
+    ],
+    [
+      "Microfono Profesional",
+      "Guitarra Fender Stratocaster",
+      "Tarjeta de Sonido",
+      "Antares Autotune",
+      "Amplificador Fender"
+    ],
+    [
+      "6",
+      "8"
+    ],
+    "10",
+    "2026"
+  ],
+  [
+    "Grabacion de mixtape",
+    "Sala A - Singular",
+    [
+      "16:00",
+      "20:00"
+    ],
+    [
+      "Microfono Profesional",
+      "Guitarra Fender Stratocaster",
+      "Tarjeta de Sonido",
+      "Antares Autotune",
+      "Amplificador Fender"
+    ],
+    [
+      "5",
+      "6"
+    ],
+    "10",
+    "2026"
+  ],
+  [
+    "Grabacion de Banda Sonora/OST",
+    "Sala C - Profesional",
+    [
+      "12:00",
+      "18:00"
+    ],
+    [
+      "Microfono Profesional",
+      "Amplificador Fender",
+      "Guitarra Fender Telecaster"
+    ],
+    [
+      "7",
+      "14"
+    ],
+    "6",
+    "2026"
+  ],
+  [
+    "Grabacion de Album",
+    "Sala B - MultiPersonal",
+    [
+      "12:00",
+      "18:00"
+    ],
+    [
+      "Microfono Profesional",
+      "Guitarra Fender Stratocaster",
+      "Bateria Acustica Yamaha",
+      "Sintetizador 808",
+      "Monitores de Audio Profesional",
+      "Tarjeta de Sonido",
+      "Microfono para bateria",
+      "Amplificador Fender"
+    ],
+    [
+      "1",
+      "1"
+    ],
+    "1",
+    "2026"
+  ],
+  [
+    "Grabacion de single",
+    "Sala A - Singular",
+    [
+      "12:00",
+      "18:00"
+    ],
+    [
+      "Microfono Profesional"
+    ],
+    [
+      "1",
+      "1"
+    ],
+    "1",
+    "2026"
+  ]
+]
