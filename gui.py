@@ -13,7 +13,6 @@ def start():
     frame2.pack(pady = 10)
     eventos_titulo.place(relx = 0.03, rely = 0.05)
     add_button.place(relx = 0.94, rely = 0.04)
-    filter_button.place(relx = 0.84, rely = 0.035)
     edit_button.place(relx = 0.88, rely = 0.04)
     frame_event_list.place(relx = 0.02, rely =0.13)
 
@@ -85,6 +84,8 @@ def confirm():
             inventario.append(i.cget("text"))
     full_event = [evento,sala,horario,inventario.copy(),(day, day_end), mes, year]
     is_validated = validation(full_event[0], full_event[1], full_event[2], full_event[3], full_event[4], full_event[5], full_event[6], Event_list.lista_eventos)
+    global last_suggested_event
+
     if is_validated[0]:
         Event_list.lista_eventos.insert(0 ,full_event)
         with open("eventos.json", "w", encoding="utf-8") as fp:
@@ -93,8 +94,11 @@ def confirm():
         label_succes.configure(text = "Evento anadido con exito :D")
         label_succes.pack()
         window.after(5000, success_forget)
+        last_suggested_event = None
     if is_validated[1] == "forbello":
-        frame_hole.place(relx=0.5,rely=0.5)
+        frame_informacion.place(x=250, y=240)
+        print (is_validated[0],is_validated[1],is_validated[2],is_validated[3])
+        last_suggested_event = is_validated[3]
         message_label.configure(text=f"El turno en el horario comprendido no se puede agendar pues {is_validated[2]}, por tanto se le sugiere anadir el turno en el horario de {is_validated[3][2]}, del {is_validated[3][4]}/{is_validated[3][5]}/{is_validated[3][6]}")
         message_label.place(relx=0.2,rely=0.2)
         cancel_button_hole.place(relx=0.2,rely=0.8)
@@ -109,7 +113,10 @@ def success_forget():
     frame_succes.place_forget()
 
 def cancel_hole():
-    frame_hole.place_forget()
+    message_label.place_forget()
+    cancel_button_hole.place_forget()
+    confirm_button_hole.place_forget()
+    frame_informacion.place_forget()
 
 def editar():
         edit_button.configure(text="Cancelar", width=40, command = cancelar)
@@ -128,16 +135,6 @@ def cancelar():
     for i in frame_event_list.grid_slaves():
          if i.cget("image") == del_img:
             i.grid_forget()
-
-def filter():
-    filter_button.place_forget()
-    filter_button_option.place(relx = 0.78, rely = 0.045)
-    filter_button_close.place(relx=0.765, rely=-0.07)
-
-def filter_close():
-    filter_button_option.place_forget()
-    filter_button.place(relx = 0.84, rely = 0.035)
-    filter_button_close.place_forget()
 
 def informacion():
     sala_informacion: str
@@ -171,18 +168,21 @@ def render_grid():
         i.destroy()
 
     for i in range(len(Event_list.lista_eventos)):
-            label_event_event = ctk.CTkLabel(frame_event_list, text=Event_list.lista_eventos[i][0], font=("roboto", 20, "bold"), compound= "left")
+            try:
+                ev = Event_list.lista_eventos[i]
+                if not isinstance(ev, (list, tuple)) or len(ev) < 7:
+                    continue
+            except Exception:
+                continue
+
+            label_event_event = ctk.CTkLabel(frame_event_list, text=ev[0], font=("roboto", 20, "bold"), compound= "left")
             label_event_event.grid(row=i, column=0, padx=20, pady=15)
-
-            label_event_room = ctk.CTkLabel(frame_event_list, text=Event_list.lista_eventos[i][1], font=("roboto", 20, "bold"), compound="left")
+            label_event_room = ctk.CTkLabel(frame_event_list, text=ev[1], font=("roboto", 20, "bold"), compound="left")
             label_event_room.grid(row=i, column=1, padx=20, pady=15)
-
-            label_event_hour = ctk.CTkLabel(frame_event_list,text=Event_list.lista_eventos[i][2][0]+"-"+Event_list.lista_eventos[i][2][1], font=("roboto", 20, "bold"), compound="left")
+            label_event_hour = ctk.CTkLabel(frame_event_list,text=ev[2][0]+"-"+ev[2][1], font=("roboto", 20, "bold"), compound="left")
             label_event_hour.grid(row = i, column=2, padx=20, pady=15)
-
-            label_event_date = ctk.CTkLabel(frame_event_list,text=(Event_list.lista_eventos[i][4][0]+"/"+Event_list.lista_eventos[i][5]+"/"+Event_list.lista_eventos[i][6])+"-"+(Event_list.lista_eventos[i][4][1]+"/"+Event_list.lista_eventos[i][5]+"/"+Event_list.lista_eventos[i][6]), compound="left", font=("roboto", 20, "bold"))
+            label_event_date = ctk.CTkLabel(frame_event_list,text=(ev[4][0]+"/"+ev[5]+"/"+ev[6])+"-"+(ev[4][1]+"/"+ev[5]+"/"+ev[6]), compound="left", font=("roboto", 20, "bold"))
             label_event_date.grid(row=i, column=5, padx=20, pady=15)
-
             label_event_info = ctk.CTkButton(frame_event_list, text="Info.", fg_color="#503636", hover_color="#7A6767", width=15, height=15, 
                                          corner_radius=100, font=("roboto", 20, "bold"), command= lambda idx=i : check_inventory(idx))
             label_event_info.grid(row = i, column=4, padx=20, pady=15)
@@ -194,6 +194,8 @@ def label_insert(inv: list):
     return string
 
 def info_cerrar():
+    for children in frame_info.winfo_children():
+        children.destroy()
     frame_info.place_forget()
     frame_event_list.place(relx=0.02,rely=0.13)
     render_grid()
@@ -260,7 +262,8 @@ def eliminar(indice):
     editar_rearrange()
     
 def informacion_cerrar():
-    
+
+    label_event_info.place_forget()
     frame_informacion.place_forget()
 
 def radio_press(radio):
@@ -298,7 +301,29 @@ def actualizar(_):
     check_days(month_button.get(), year_button.get())
 
 def confirmar_hole():
-    pass
+    global last_suggested_event
+    if not last_suggested_event:
+        message_label.place_forget()
+        cancel_button_hole.place_forget()
+        confirm_button_hole.place_forget()
+        frame_informacion.place_forget()
+        return
+
+    nueva = list(last_suggested_event)
+    Event_list.lista_eventos.insert(0, nueva)
+    with open("eventos.json", "w", encoding="utf-8") as fp:
+        json.dump(Event_list.lista_eventos, fp, ensure_ascii=False, indent=2)
+    frame_informacion.place_forget()
+    message_label.place_forget()
+    cancel_button_hole.place_forget()
+    confirm_button_hole.place_forget()
+    render_grid()
+    frame_succes.place(rely = 0.93, relx = 0.35)
+    label_succes.configure(text = "Evento anadido con exito :D")
+    label_succes.pack(side = 'bottom')
+    window.after(5000, success_forget)
+
+    last_suggested_event = None
 
 nombre_eventos=[]
 for i in range(len(EVENTOS)):
@@ -318,6 +343,7 @@ inventario:list = []
 label_event_list: object
 month_values = meses()
 day_values = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14",'15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31']
+last_suggested_event = None
 
 #Imagenes
 
@@ -325,12 +351,10 @@ base_path = Path(__file__).parent / "Images"
 
 add_image = Image.open(base_path / "add_event.png")
 delete_image = Image.open(base_path / "delete.png")
-filter_image = Image.open(base_path / "filter_list.png")
 robot_image = Image.open(base_path / "no_events.png")
 info_image = Image.open(base_path / "info.png")
 add_img = ctk.CTkImage(light_image=add_image, dark_image=add_image, size=(25,25))
 del_img = ctk.CTkImage(light_image=delete_image, dark_image=delete_image, size=(30,30))
-filter_img = ctk.CTkImage(light_image=filter_image, dark_image=filter_image, size=(30,30))
 robot_img = ctk.CTkImage(light_image=robot_image, dark_image=robot_image, size=(200,200))
 info_img = ctk.CTkImage(light_image=info_image, dark_image=info_image, size=(20,20))
 
@@ -356,8 +380,6 @@ frame_event_list = ctk.CTkScrollableFrame(frame2, fg_color="#442B2B", bg_color="
 frame_informacion = ctk.CTkFrame(window, fg_color="#3A2626", bg_color="#221515", width= 800, height=400, corner_radius=40, )
 frame_info = ctk.CTkFrame(frame2, width=500, height=500, corner_radius= 30, fg_color="#442b2b", bg_color="transparent")
 
-frame_hole = ctk.CTkFrame(frame_anadir)
-
 #Labels
 titulo = ctk.CTkLabel(frame1, width=500, height=70, text='Estudio Musical "Botaos Gang"', font=("roboto", 25, "bold"))
 subtitulo = ctk.CTkLabel(frame1, text="Gestor de sesiones de grabacion", font=("roboto", 20, "bold"))
@@ -369,7 +391,7 @@ salas_opciones = ctk.CTkOptionMenu(frame_anadir,fg_color="#2B1D1D", values=nombr
                                    font=("roboto", 20, "bold"), button_hover_color="#3D2A2A", width=315,height=42,corner_radius=29, dropdown_fg_color="#2B1D1D", 
                                    button_color="#2B1D1D", dropdown_font=("roboto", 20))
 
-message_label = ctk.CTkLabel(frame_hole, font=("roboto", 20), text="")
+message_label = ctk.CTkLabel(frame_informacion, font=("roboto", 20), text="",wraplength=500)
 
 eventos_titulo = ctk.CTkLabel(frame2, text="Turnos:", font=("roboto", 20, "bold"), fg_color="#442B2B", corner_radius= 10)
 desde_hasta = ctk.CTkLabel(frame_anadir, text="Horario:", font=("roboto", 27))
@@ -389,9 +411,6 @@ no_event_button = ctk.CTkButton(frame_event_list,width=150, height=30, fg_color=
 #Botones
 add_button = ctk.CTkButton(frame2, text="",image=add_img, fg_color="transparent", hover_color="#523939", width=20, height=20, command=anadir, font=("roboto", 30, "bold"))
 edit_button = ctk.CTkButton(frame2, text="Editar", fg_color="#442B2B", hover_color="#523939", width=10, height=15, command=editar, font=("roboto", 20, "bold"))
-filter_button = ctk.CTkButton(frame2, text="", image=filter_img, fg_color="transparent", hover_color="#523939", width=10, height=15, command=filter, font=("roboto", 20, "bold"))
-filter_button_option = ctk.CTkOptionMenu(frame2, fg_color="#442B2B",width=100, height=10, values=filtros,font=("roboto",20, "bold"), dropdown_fg_color="#442B2B", button_color="#442B2B")
-filter_button_close = ctk.CTkButton(filter_button_option, text="x", fg_color="#442B2B", hover_color= "#7A6767", width=15, height=15, font=("roboto", 20, "bold"), command=filter_close)
 confirm_button = ctk.CTkButton(frame_anadir, text="Confirmar", fg_color="#251919", hover_color="#7A6767", width=10, height=15, command=confirm, font=("roboto", 20, "bold"))
 event_information_button = ctk.CTkButton(frame_anadir, text="", image=info_img, fg_color="transparent", hover_color="#7A6767", width=5, height=10, 
                                          corner_radius=100, command=informacion, font=("roboto", 20, "bold"))
@@ -400,8 +419,8 @@ day_button_end = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, h
 year_button = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius= 10, dropdown_fg_color="#2B1D1D", button_color="#2b1d1d", values=["2026","2027","2028","2029","2030","2031","2032"], command=actualizar, font=("roboto", 20), dropdown_font=("roboto", 20))
 month_button = ctk.CTkOptionMenu(frame_anadir, fg_color="#2B1D1D", width=40, height=15, corner_radius= 10, dropdown_fg_color="#2B1D1D", button_color="#2b1d1d", values=month_values, command=lambda _: check_days(month_button.get(), year_button.get()), font=("roboto", 20), dropdown_font=("roboto", 20))
 
-cancel_button_hole = ctk.CTkButton(frame_hole, font=("roboto", 20), text="Cancelar", command=cancel_hole)
-confirm_button_hole = ctk.CTkButton(frame_hole, font=("roboto", 20), text="Confirmar", command=confirmar_hole)
+cancel_button_hole = ctk.CTkButton(frame_informacion, font=("roboto", 20), text="Cancelar", command=cancel_hole)
+confirm_button_hole = ctk.CTkButton(frame_informacion, font=("roboto", 20), text="Confirmar", command=confirmar_hole)
 
 ##Cerrar
 button_cerrar_anadir = ctk.CTkButton(frame_anadir, text="X", corner_radius=100, hover_color="#251818", command=anadir_cerrar, width=30, height=30, fg_color="#160E0E")

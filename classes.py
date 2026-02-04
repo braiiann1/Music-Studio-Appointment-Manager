@@ -1,19 +1,18 @@
 import json
 
 class Eventos:
-    def __init__(self, id, name, min_booking_hours, price, description):
+    def __init__(self, id, name, price, description):
         self.id = id
         self.name = name
-        self.min_booking_hours = min_booking_hours
         self.price = price
         self.description = description
 
 EVENTOS = [
-    Eventos (901, "Grabacion de single", 1, 500,"Produccion de una  cancion destinada a lanzarse como sencillo independiente."),
-    Eventos (902, "Grabacion de mixtape", 4, 3000, "Un mixtape es una recopilacion de varias canciones reunidas en un solo proyecto y difundidas de forma mas libre e informal que un album."),
-    Eventos (903, "Grabacion de EP", 4, 2000, "Grabacion de un proyecto sencillo de corta duracion, pero con un trabajo productivo similar al de un album."),
-    Eventos (904, "Grabacion de Album", 8, 5000, "Grabacion de un proyecto de duracion considerable, pensado para mostrar la identidad artistica de quien lo crea."),
-    Eventos (905, "Grabacion de Banda Sonora/OST", 36, 20000, "Proyecto destinado a acompanar una pelicula, serie, videojuego u obra audiovisual, emplea una considerable cantidad de recursos.")
+    Eventos (901, "Grabacion de single", 500,"Produccion de una  cancion destinada a lanzarse como sencillo independiente."),
+    Eventos (902, "Grabacion de mixtape", 3000, "Un mixtape es una recopilacion de varias canciones reunidas en un solo proyecto y difundidas de forma mas libre e informal que un album."),
+    Eventos (903, "Grabacion de EP", 2000, "Grabacion de un proyecto sencillo de corta duracion, pero con un trabajo productivo similar al de un album."),
+    Eventos (904, "Grabacion de Album", 5000, "Grabacion de un proyecto de duracion considerable, pensado para mostrar la identidad artistica de quien lo crea."),
+    Eventos (905, "Grabacion de Banda Sonora/OST", 20000, "Proyecto destinado a acompanar una pelicula, serie, videojuego u obra audiovisual, emplea una considerable cantidad de recursos.")
 ]
 
 class Salas:
@@ -40,15 +39,15 @@ class Equipos_Audio:
 EQUIPOS = [
     Equipos_Audio (101, "Microfono Profesional", "microfono", 10),
     Equipos_Audio (102, "Guitarra Fender Stratocaster", "instrumento", 1),
-    Equipos_Audio (103, "Bateria Acustica Yamaha", "instrumento", 1),
+    Equipos_Audio (103, "Bateria Acustica Yamaha", "instrumento", 2),
     Equipos_Audio (104, "Bajo Fender American Vintage", "instrumento", 1),
     Equipos_Audio (105, "Sintetizador 808", "instrumento", 1),
     Equipos_Audio (106, "Monitores de Audio Profesional", "monitor", 3),
-    Equipos_Audio (107, "Tarjeta de Sonido", "soundcard", 1),
+    Equipos_Audio (107, "Tarjeta de Sonido", "soundcard", 4),
     Equipos_Audio (108, "Antares Autotune", "software de audio", 1),
-    Equipos_Audio (109, "Microfono para bateria", "microfono", 1),
+    Equipos_Audio (109, "Microfono para bateria", "microfono", 2),
     Equipos_Audio (110, "Amplificador Fender", "amplificador", 2),
-    Equipos_Audio (111, "Guitarra Fender Telecaster", "instrumento", 1)
+    Equipos_Audio (111, "Guitarra Fender Telecaster", "instrumento", 2)
 ]
 def meses():
     months = []
